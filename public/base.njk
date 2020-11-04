@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="images/svgs/heart.svg">
+
+    <title>HeartGuard™ Health Monitoring</title>
+
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script language="javascript" src="popper.js"></script>
+    <script language="javascript" src="js/bootstrap.min.js"></script>
+    <script language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.0.1/nunjucks.min.js"></script>
+    <script src="anime.min.js"></script>
+    {% endblock %}
+
+    {% block styles %}
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/cover.css" rel="stylesheet">
+    {% endblock %}
+
+</head>
+
+<body class="text-center">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        {% block header %}
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">HeartGuard™</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/user">Login</a>
+                    <a class="nav-link" href="#">Contact</a>
+                </nav>
+            </div>
+        </header>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% block footer %}
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                <p>Code and design by Jacob Simon Merki & Kevin Albert Kasper.</p>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+</body>
+</html>
