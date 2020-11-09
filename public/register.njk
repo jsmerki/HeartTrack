@@ -1,0 +1,42 @@
+{% extends "base.njk" %}
+
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/register.js"></script>
+{% endblock %}
+
+{% block content %}
+    <main role="main" class="inner cover">
+        <h1 class="cover-heading mb-4">Register a New Account</h1>
+        <form class="form-signin" novalidate>
+            <div>
+                <label for="inputEmail" class="sr-only">Email Address</label>
+                <input type="email" id="inputEmail" class="form-control mb-2" placeholder="Email address" autofocus>
+                <div class="invalid-feedback unmatchedEmails">Email addresses do not match.</div>
+            </div>
+
+            <div>
+                <label for="confirmEmail" class="sr-only">Confirm Email Address</label>
+                <input type="email" id="confirmEmail" class="form-control mb-2" placeholder="Confirm Email address">
+                <div class="invalid-feedback unmatchedEmails">Email addresses do not match.</div>
+            </div>
+
+            <div>
+                <label for="inputFullName" class="sr-only">Full Name</label>
+                <input type="text" id="inputFullName" class="form-control mb-2" placeholder="Full Name" required>
+            </div>
+
+            <div>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control mb-2" placeholder="Password" required>
+            </div>
+            <div>
+                <label for="confirmPassword" class="sr-only">Password</label>
+                <input type="password" id="confirmPassword" class="form-control mb-4" placeholder="Confirm Password" required>
+            </div>
+
+            <button class="btn btn btn-primary btn-block registerSubmit" type="submit">Register</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+        </form>
+    </main>
+{% endblock %}
