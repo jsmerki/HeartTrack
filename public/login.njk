@@ -2,12 +2,12 @@
 
 {% block styles %}
     {{  super() }}
-    <link href="stylesheets/signin.css" rel="stylesheet">
+    <link href="/stylesheets/signin.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
     <main role="main" class="inner cover">
-        <img class="mb-4" src="images/svgs/heart.svg" alt="" width="72" height="72">
+        <img class="mb-4" src="/images/svgs/heart.svg" alt="" width="72" height="72">
         <h1 class="cover-heading">Please Sign In</h1>
         <form class="form-signin">
 
@@ -21,6 +21,8 @@
                 </label>
             </div>
             <button class="btn btn btn-primary btn-block" type="submit">Sign in</button>
+            <a class="nav-link mt-5" href="/user/register">Need an account?</a>
+
             <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
         </form>
     </main>

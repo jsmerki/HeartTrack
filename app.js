@@ -7,7 +7,6 @@ var nunjucks = require('nunjucks');
 
 var app = express();
 
-
 nunjucks.configure(path.join(__dirname, 'public'), {
   express: app,
   watch: true
@@ -16,7 +15,7 @@ app.set('view engine', 'njk');
 app.set('views', path.join(__dirname, 'public'));
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
 
 app.use(logger('dev'));
 app.use(express.json());
