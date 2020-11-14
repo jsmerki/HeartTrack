@@ -4,32 +4,45 @@ function sendRegisterRequest() {
     let password = $('#password');
     let passwordConfirm = $('#passwordConfirm');
     let fullName = $('#fullName');
-    console.log('Callback run.');
     $(".invalid-feedback").hide();
+
 
     /* *************** *
      *  Error Checking *
      * *************** */
+    let emailRe = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/;
+    if (!emailRe.test(email.val())) {
+        email.addClass("is-invalid");
+        $('.improperEmail').show();
+        return;
+    }
+    else {
+        email.removeClass("is-invalid").addClass("is-valid");
+        $('.improperEmail').hide();
+    }
+
     if (email.val() !== emailConfirm.val()) {
         email.addClass("is-invalid");
         emailConfirm.addClass("is-invalid");
         $('.unmatchedEmails').show();
-        console.log('Emails invalid.');
         return;
     }
     else {
         email.removeClass("is-invalid").addClass("is-valid");
         emailConfirm.removeClass("is-invalid").addClass("is-valid");
         $('.unmatchedEmails').hide();
-        console.log('Emails valid.')
     }
 
     // Check to make sure the passwords match
     // FIXME: Check to ensure strong password
     if (password.val() != passwordConfirm.val()) {
-        $('#ServerResponse').html("<span class='red-text text-darken-2'>Passwords do not match.</span>");
-        $('#ServerResponse').show();
+        email.addClass("is-invalid");
+        $('.unmatchedPasswords').show();
         return;
+    }
+    else {
+        email.removeClass("is-invalid").addClass("is-valid");
+        $('.unmatchedPasswords').hide();
     }
 
     /*

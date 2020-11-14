@@ -20,21 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97fab955-44fb-4675-a122-55731c83d687" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/javascripts/register.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/profile.njk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/register.njk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/base.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/base.njk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/svgs/curve.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/svgs/curve.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/svgs/pulse.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/svgs/pulse.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.njk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/login.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/login.njk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/cover.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/cover.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/register.njk" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +98,7 @@
       <workItem from="1604623816861" duration="1379000" />
       <workItem from="1604700251733" duration="140000" />
       <workItem from="1604783790369" duration="4026000" />
+      <workItem from="1605129347983" duration="811000" />
     </task>
     <servers />
   </component>
@@ -157,9 +146,9 @@
       <screen x="0" y="23" width="1792" height="1006" />
     </state>
     <state x="561" y="243" key="run.anything.popup/0.23.1792.1006@0.23.1792.1006" timestamp="1604520892716" />
-    <state x="561" y="245" width="670" height="676" key="search.everywhere.popup" timestamp="1604221852602">
+    <state x="561" y="245" width="670" height="676" key="search.everywhere.popup" timestamp="1604883313795">
       <screen x="0" y="23" width="1792" height="1006" />
     </state>
-    <state x="561" y="245" width="670" height="676" key="search.everywhere.popup/0.23.1792.1006@0.23.1792.1006" timestamp="1604221852602" />
+    <state x="561" y="245" width="670" height="676" key="search.everywhere.popup/0.23.1792.1006@0.23.1792.1006" timestamp="1604883313795" />
   </component>
 </project>
