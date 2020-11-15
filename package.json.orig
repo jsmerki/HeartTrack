@@ -7,7 +7,10 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
+<<<<<<< HEAD
+=======
     "bcrypt": "^5.0.0",
+>>>>>>> jacob
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.3",
     "cookie-parser": "~1.4.4",

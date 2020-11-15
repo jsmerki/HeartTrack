@@ -3,11 +3,14 @@
 {% block styles %}
     {{  super() }}
     <link href="/stylesheets/signin.css" rel="stylesheet">
+<<<<<<< HEAD
+=======
 {% endblock %}
 
 {% block scripts %}
     {{  super() }}
     <script type="application/javascript" src="/javascripts/login.js"></script>
+>>>>>>> jacob
 {% endblock %}
 
 {% block content %}

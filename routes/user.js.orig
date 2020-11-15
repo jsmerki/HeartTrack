@@ -23,19 +23,29 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   // Error Checking
+<<<<<<< HEAD
+  if( !req.body.hasAttribute("password") || !req.body.hasAttribute("email") || !req.body.hasAttribute("password")
+    || !req.body.hasAttribute("fullName"))
+
+=======
   /*
   if( !req.body.hasOwnProperty("password") || !req.body.hasOwnProperty("email")
     || !req.body.hasOwnProperty("fullName")){
     return res.status(400).json({success : false, message : "Ya fuckd up"})
   }
    */
+>>>>>>> jacob
 
   // Password Hashing and Database Entry Creation
   bcrypt.hash(req.body.password, 10, function(err, hash) {
     if (err) {
+<<<<<<< HEAD
+      res.status(400).json({success : false, message : err.errmsg});
+=======
       console.log("Hash: " + err.errmsg);
       return res.status(400).json({success : false, message : err.errmsg});
 
+>>>>>>> jacob
     }
     else {
       let newUser = new User({
@@ -46,6 +56,13 @@ router.post('/register', function(req, res, next) {
 
       newUser.save(function(err, user) {
         if (err) {
+<<<<<<< HEAD
+          res.status(400).json({success: false,
+            message: err.errmsg});
+        }
+        else {
+          res.status(201).json({success: true,
+=======
           console.log("Save: " + err.errmsg);
           return res.status(400).json({success: false,
             message: err.errmsg});
@@ -53,14 +70,18 @@ router.post('/register', function(req, res, next) {
         }
         else {
           return res.status(201).json({success: true,
+>>>>>>> jacob
             message: user.fullName + " has been created."});
         }
       });
     }
   });
+<<<<<<< HEAD
+=======
 
   //FIXME: Create jwt and put in local storage?
   console.log("Finished registering");
+>>>>>>> jacob
 });
 
 // Account Information and Editing
@@ -68,11 +89,16 @@ router.get('/profile', function(req, res, next) {
   res.render('profile.njk', { title: 'Express' });
 });
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> jacob
 router.post('/register', function(req, res, next) {
   res.render('register.njk', { title: 'Express' });
 });
 
+<<<<<<< HEAD
+=======
 
 //Signing in
 router.post("/login", function(req, res){
@@ -100,4 +126,5 @@ router.post("/login", function(req, res){
   })
 })
 
+>>>>>>> jacob
 module.exports = router;

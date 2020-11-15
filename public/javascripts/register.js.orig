@@ -1,6 +1,28 @@
 function sendRegisterRequest() {
     let email = $('#inputEmail');
     let emailConfirm = $('#confirmEmail');
+<<<<<<< HEAD
+    let password = $('#password');
+    let passwordConfirm = $('#passwordConfirm');
+    let fullName = $('#fullName');
+    $(".invalid-feedback").hide();
+
+
+    /* *************** *
+     *  Error Checking *
+     * *************** */
+    let emailRe = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/;
+    if (!emailRe.test(email.val())) {
+        email.addClass("is-invalid");
+        $('.improperEmail').show();
+        return;
+    }
+    else {
+        email.removeClass("is-invalid").addClass("is-valid");
+        $('.improperEmail').hide();
+    }
+
+=======
     let password = $('#inputPassword');
     let passwordConfirm = $('#confirmPassword');
     let fullName = $('#inputFullName');
@@ -11,23 +33,53 @@ function sendRegisterRequest() {
     /* *************** *
      *  Error Checking *
      * *************** */
+>>>>>>> jacob
     if (email.val() !== emailConfirm.val()) {
         email.addClass("is-invalid");
         emailConfirm.addClass("is-invalid");
         $('.unmatchedEmails').show();
+<<<<<<< HEAD
+=======
         console.log('Emails invalid.');
+>>>>>>> jacob
         return;
     }
     else {
         email.removeClass("is-invalid").addClass("is-valid");
         emailConfirm.removeClass("is-invalid").addClass("is-valid");
         $('.unmatchedEmails').hide();
+<<<<<<< HEAD
+=======
         console.log('Emails valid.')
+>>>>>>> jacob
     }
 
     // Check to make sure the passwords match
     // FIXME: Check to ensure strong password
     if (password.val() != passwordConfirm.val()) {
+<<<<<<< HEAD
+        email.addClass("is-invalid");
+        $('.unmatchedPasswords').show();
+        return;
+    }
+    else {
+        email.removeClass("is-invalid").addClass("is-valid");
+        $('.unmatchedPasswords').hide();
+    }
+
+    /*
+    $.ajax({
+        url: '/users/register',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({email:email, fullName:fullName, password:password}),
+        dataType: 'json'
+    })
+        .done(registerSuccess)
+        .fail(registerError);
+
+     */
+=======
         $('#ServerResponse').html("<span class='red-text text-darken-2'>Passwords do not match.</span>");
         $('#ServerResponse').show();
         return;
@@ -45,6 +97,7 @@ function sendRegisterRequest() {
         //.fail(registerError);
 
 
+>>>>>>> jacob
 }
 
 $().ready( function(){
