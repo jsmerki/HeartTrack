@@ -1,6 +1,32 @@
+function getAccountInfoRequest(){
+    $.ajax({
+        url: '/user/account',
+        type: 'GET',
+        headers: { 'x-auth' : window.localStorage.getItem("authToken") },
+        dataType: 'json'
+    })  .done(getInfoSuccess)
+        .fail(getInfoFailure);
+}
+
+function getInfoSuccess(data, textStatus, jqXHR){
+    $("#userEmail").text(data.email);
+    $("#fullName").text(data.fullName);
+    $("#lastAccess").text(data.lastAccess.toDateString());
+    console.log("Date: " + data.lastAccess.toDateString());
+}
+
+function getInfoFailure(jqXHR, textStatus, errorThrown) {
+    // If authentication error, delete the authToken
+    // redirect user to sign-in page (which is index.html)
+    if (jqXHR.status == 401) {
+        window.localStorage.removeItem("authToken");
+        window.location = '/user/login';
+    }
+}
+
 function addNewDeviceRequest(){
     let email = $("#email").val();
-    let deviceID = $("deviceID").val();
+    let deviceID = $("#deviceID").val();
 
     $.ajax({
         url: '/devices/add',
@@ -16,14 +42,8 @@ function addNewDeviceRequest(){
 }
 
 function newDeviceSuccess(data, textStatus, jqXHR){
-    //TODO:Something? Reload page to show added device?
-    $.ajax({
-        url: '/users/profile',
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: 'json'
-    });
-    //window.location = "/users/profile"
+   //Reload page to show newly added device?
+    window.location = "/user/profile"
 }
 
 function newDeviceError(jqXHR, textStatus, errorThrown){
@@ -32,5 +52,14 @@ function newDeviceError(jqXHR, textStatus, errorThrown){
 
 //Add click listener for add device button
 $().ready(function(){
-    $("#addDevice").click(addNewDeviceRequest)
+
+    //If no auth token return to login page
+    if(!window.localStorage.getItem("authToken")){
+        window.location = "/user/login";
+    }
+    else{
+        getAccountInfoRequest();
+    }
+
+    //$("#addDevice").click(addNewDeviceRequest);
 })

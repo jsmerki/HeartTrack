@@ -17,6 +17,7 @@ function loginUserRequest(){
 
 function loginSuccess(data, textStatus, jqXHR){
     //Login succeeded, move on to profile page
+    window.localStorage.setItem("authToken", data.jwt);
     window.location="/user/profile";
 
 }
@@ -29,13 +30,7 @@ function loginFailure(jqXHR, textStatus, errorThrown){
 
 $().ready( function(){
     if(window.localStorage.getItem("authToken")){
-        $.ajax({
-            url: '/user/profile',
-            type: 'GET',
-            contentType: 'application/json',
-            dataType: 'json'
-        });
-        //window.location="/user/profile";
+        window.location="/user/profile";
     }
 
     $('form').submit(function(event){
