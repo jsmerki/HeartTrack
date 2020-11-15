@@ -1,8 +1,21 @@
 {% extends "base.njk" %}
 
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/profile.js"></script>
+{% endblock %}
+
 {% block content %}
 <main role="main" class="inner cover">
+    <!--
     <h1 class="cover-heading">Come back soon!</h1>
     <p class="lead">Nothing here yet.</p>
+    -->
+    <div class="">
+        <h1 id="infoHeader">User Info:</h1>
+        <p>Email: <span id="userEmail"></span></p>
+        <p>Full Name: <span id="fullName"></span></p>
+        <p>Last Accessed: <span id="lastAccess"></span></p>
+    </div>
 </main>
 {% endblock %}
