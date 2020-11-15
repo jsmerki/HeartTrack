@@ -7,6 +7,8 @@ function sendRegisterRequest() {
     console.log('Callback run.');
     $(".invalid-feedback").hide();
 
+    console.log("Submitting registration");
+
     /* *************** *
      *  Error Checking *
      * *************** */
@@ -32,18 +34,18 @@ function sendRegisterRequest() {
         return;
     }
 
-    /*
+
     $.ajax({
         url: '/users/register',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({email:email, fullName:fullName, password:password}),
         dataType: 'json'
-    })
-        .done(registerSuccess)
-        .fail(registerError);
+    });
+        //.done(registerSuccess)
+        //.fail(registerError);
 
-     */
+
 }
 
 $().ready( function(){

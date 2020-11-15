@@ -5,6 +5,11 @@
     <link href="/stylesheets/signin.css" rel="stylesheet">
 {% endblock %}
 
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/login.js"></script>
+{% endblock %}
+
 {% block content %}
     <main role="main" class="inner cover">
         <img class="mb-4" src="/images/svgs/heart.svg" alt="" width="72" height="72">

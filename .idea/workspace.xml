@@ -20,21 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97fab955-44fb-4675-a122-55731c83d687" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/javascripts/register.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/profile.njk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/register.njk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/javascripts/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/javascripts/profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/devices.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/base.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/base.njk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/svgs/curve.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/svgs/curve.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/svgs/pulse.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/svgs/pulse.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.njk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/javascripts/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/register.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/login.njk" beforeDir="false" afterPath="$PROJECT_DIR$/public/login.njk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/stylesheets/cover.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/stylesheets/cover.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,8 +67,8 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="14.14.0" />
-    <property name="javascript.nodejs.core.library.typings.version" value="14.14.0" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.15.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.14.7" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -110,6 +105,9 @@
       <workItem from="1604623816861" duration="1379000" />
       <workItem from="1604700251733" duration="140000" />
       <workItem from="1604783790369" duration="4026000" />
+      <workItem from="1605395013205" duration="4095000" />
+      <workItem from="1605408575850" duration="4133000" />
+      <workItem from="1605412816664" duration="881000" />
     </task>
     <servers />
   </component>
