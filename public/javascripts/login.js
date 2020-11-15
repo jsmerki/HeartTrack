@@ -1,10 +1,10 @@
 function loginUserRequest(){
 
-    let email = $("inputEmail").val();
-    let password = $("inputPassword").val();
+    let email = $("#inputEmail").val();
+    let password = $("#inputPassword").val();
 
     $.ajax({
-        url: '/users/login',
+        url: '/user/login',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({email:email, password:password}),
@@ -17,29 +17,25 @@ function loginUserRequest(){
 
 function loginSuccess(data, textStatus, jqXHR){
     //Login succeeded, move on to profile page
-    $.ajax({
-        url: '/users/profile',
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: 'json'
-    });
+    window.location="/user/profile";
 
 }
 
 function loginFailure(jqXHR, textStatus, errorThrown){
     console.log("BIG FAIL");
+    console.dir(jqXHR);
 }
 
 
 $().ready( function(){
     if(window.localStorage.getItem("authToken")){
         $.ajax({
-            url: '/users/profile',
+            url: '/user/profile',
             type: 'GET',
             contentType: 'application/json',
             dataType: 'json'
         });
-        //window.location="/users/profile";
+        //window.location="/user/profile";
     }
 
     $('form').submit(function(event){

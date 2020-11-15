@@ -1,14 +1,13 @@
 function sendRegisterRequest() {
     let email = $('#inputEmail');
     let emailConfirm = $('#confirmEmail');
-    let password = $('#password');
-    let passwordConfirm = $('#passwordConfirm');
-    let fullName = $('#fullName');
+    let password = $('#inputPassword');
+    let passwordConfirm = $('#confirmPassword');
+    let fullName = $('#inputFullName');
     console.log('Callback run.');
     $(".invalid-feedback").hide();
 
-    console.log("Submitting registration");
-
+    console.log(password.val());
     /* *************** *
      *  Error Checking *
      * *************** */
@@ -36,10 +35,10 @@ function sendRegisterRequest() {
 
 
     $.ajax({
-        url: '/users/register',
+        url: '/user/register',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({email:email, fullName:fullName, password:password}),
+        data: JSON.stringify({email:email.val(), fullName:fullName.val(), password:password.val()}),
         dataType: 'json'
     });
         //.done(registerSuccess)

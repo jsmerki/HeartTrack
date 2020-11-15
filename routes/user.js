@@ -22,16 +22,20 @@ router.get('/register', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-  console.log("Registering");
   // Error Checking
-  if( !req.body.hasAttribute("password") || !req.body.hasAttribute("email") || !req.body.hasAttribute("password")
-    || !req.body.hasAttribute("fullName"))
-
+  /*
+  if( !req.body.hasOwnProperty("password") || !req.body.hasOwnProperty("email")
+    || !req.body.hasOwnProperty("fullName")){
+    return res.status(400).json({success : false, message : "Ya fuckd up"})
+  }
+   */
 
   // Password Hashing and Database Entry Creation
   bcrypt.hash(req.body.password, 10, function(err, hash) {
     if (err) {
-      res.status(400).json({success : false, message : err.errmsg});
+      console.log("Hash: " + err.errmsg);
+      return res.status(400).json({success : false, message : err.errmsg});
+
     }
     else {
       let newUser = new User({
@@ -42,11 +46,13 @@ router.post('/register', function(req, res, next) {
 
       newUser.save(function(err, user) {
         if (err) {
-          res.status(400).json({success: false,
+          console.log("Save: " + err.errmsg);
+          return res.status(400).json({success: false,
             message: err.errmsg});
+
         }
         else {
-          res.status(201).json({success: true,
+          return res.status(201).json({success: true,
             message: user.fullName + " has been created."});
         }
       });
