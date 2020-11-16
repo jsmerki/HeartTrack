@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 let bcrypt = require("bcryptjs");
 let jwt = require("jwt-simple");
 let fs = require('fs');
@@ -44,6 +44,10 @@ router.post("/login", function(req, res){
   })
 })
 
+router.get('/logout', function(req, res, next) {
+  res.render('logout.njk', { title: 'Express' });
+});
+
 /* Account Creation Form & Posting Endpoint */
 router.get('/register', function(req, res, next) {
   res.render('register.njk', { title: 'Express' });
@@ -51,12 +55,11 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   // Error Checking
-  /*
   if( !req.body.hasOwnProperty("password") || !req.body.hasOwnProperty("email")
     || !req.body.hasOwnProperty("fullName")){
-    return res.status(400).json({success : false, message : "Ya fuckd up"})
+    return res.status(400).json({success : false, message : "Missing required data."})
   }
-   */
+
 
   // Password Hashing and Database Entry Creation
   bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -91,14 +94,14 @@ router.post('/register', function(req, res, next) {
   console.log("Finished registering");
 });
 
-// Account Information and Editing
-router.get('/profile', function(req, res, next) {
-  res.render('profile.njk', { title: 'Express' });
+router.post('/register', function(req, res, next) {
+  res.render('register.njk', { title: 'Express' });
 });
 
 
-router.post('/register', function(req, res, next) {
-  res.render('register.njk', { title: 'Express' });
+// Account Information and Editing
+router.get('/profile', function(req, res, next) {
+  res.render('profile.njk', { title: 'Express' });
 });
 
 //Get account info to display on profile.njk

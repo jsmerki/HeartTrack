@@ -6,16 +6,22 @@
 {% endblock %}
 
 {% block content %}
-<main role="main" class="inner cover">
-    <!--
-    <h1 class="cover-heading">Come back soon!</h1>
-    <p class="lead">Nothing here yet.</p>
-    -->
-    <div class="">
-        <h1 id="infoHeader">User Info:</h1>
-        <p>Email: <span id="userEmail"></span></p>
-        <p>Full Name: <span id="fullName"></span></p>
-        <p>Last Accessed: <span id="lastAccess"></span></p>
+<main role="main" class="inner cover container text-left">
+    <div class="row mb-5">
+        <h1 id="infoHeader">User Profile</h1>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <strong>Email:</strong>
+            <p><span id="userEmail"></span></p>
+            <strong>Full Name:</strong>
+            <p><span id="fullName"></span></p>
+            <strong>Last Accessed:</strong>
+            <p><span id="lastAccess"></span></p>
+        </div>
+        <div class="col-md">
+            No devices added yet!
+        </div>
     </div>
 </main>
 {% endblock %}

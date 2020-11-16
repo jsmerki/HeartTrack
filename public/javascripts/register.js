@@ -10,6 +10,7 @@ function sendRegisterRequest() {
     $(".is-invalid").removeClass("is-invalid").removeClass('is-valid');
     $(".requiredField").remove();
     $("#passwordCriterion").hide();
+
     let error = false;
 
 
@@ -76,20 +77,23 @@ function sendRegisterRequest() {
     $("input:not(.invalid-feedback)").addClass('is-valid');
 
     if(!error) {
-        console.log("--");
-        /*
         $.ajax({
             url: '/user/register',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({email: email.val(), fullName: fullName.val(), password: password.val()}),
-            dataType: 'json'
+            dataType: 'json',
+            success: function(data, textStatus, jqXHR) {
+                // redirect to google after 4 seconds
+                $('.alert-danger').hide();
+                $('.alert-success').fadeIn(500);
+                window.setTimeout(function() {
+                    window.location.href = '/user/login';
+                }, 4000);
+            }
+        }).fail(function(data, textStatus, jqXHR) {
+            $('.alert-danger').fadeIn(500);
         });
-        */
-
-    }
-    else {
-        console.log("--");
     }
         //.done(registerSuccess)
         //.fail(registerError);
@@ -98,6 +102,7 @@ function sendRegisterRequest() {
 }
 
 $().ready( function(){
+    $('.alert').hide();
     $('form').submit(function(event){
         event.preventDefault();
         event.stopPropagation();

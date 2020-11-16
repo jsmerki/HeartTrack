@@ -1,0 +1,14 @@
+{% extends "base.njk" %}
+
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/visualization.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div role="main" class="inner cover container-fluid align-self-start mainContent">
+        <h1 class="cover-heading">HeartTrack Health Monitoring</h1>
+        <p class="lead">Track your readings on this page. Keep charge of your health.</p>
+    </div>
+{% endblock %}
