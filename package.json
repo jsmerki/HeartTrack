@@ -23,6 +23,7 @@
     "mongoose": "^5.10.14",
     "morgan": "~1.9.1",
     "nunjucks": "^3.2.2",
+    "plotly": "^1.0.6",
     "popper": "^1.0.1",
     "popper.js": "^1.16.1"
   }

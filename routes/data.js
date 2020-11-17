@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
+let plotly = require('plotly');
 
 /* GET health page. */
 router.get('/', function(req, res, next) {
