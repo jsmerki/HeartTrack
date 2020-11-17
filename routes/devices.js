@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
-let bcrypt = require("bcryptjs");
-let jwt = require("jwt-simple");
-let fs = require('fs');
 let Device = require('../models/device');
+let User = require('../models/user');
+
 
 //Generate random API key
 function getNewApikey() {
@@ -18,24 +17,24 @@ function getNewApikey() {
 }
 
 //Add new device
-router.post("add", function(req, res, next){
-    let ownerEmail = "";
+router.post('/add', function(req, res, next){
+
     let resJSON = {
-        registered: true,
+        registeredToDb: false,
+        registeredToUser: false,
         message: "",
         APIKey: "none",
         deviceID: "none"
     };
 
     //Error checking, confirm ID
-    if(!req.body.hasAttribute("deviceID")){
+    if(!req.body.hasOwnProperty("deviceID")){
         resJSON.message = "Missing device ID";
         return res.status(400).json(resJSON);
     }
 
-    //Use email from auth token if provided, else use email in request
-    //FIXME: Will we use jwt, and if so what's secret?
-    if(!req.body.hasAttribute("email")){
+    //Use email in request
+    if(!req.body.hasOwnProperty("email")){
         resJSON.message = "Missing device owner's email";
         return res.status(400).json(resJSON);
     }
@@ -49,10 +48,25 @@ router.post("add", function(req, res, next){
         else{
             let newKey = getNewApikey();
 
+            //Find user with email and add ID string to array
+            User.findOne({email: req.body.email}, function(err, user){
+                //Not going to check for null user right now, if logged user should exist
+                if(err){
+                    return res.status(400).json({success: false, message: "Unknown database error"});
+                }
+                user.userDevices.push(req.body.deviceID);
+                user.save(function(err, user){
+                    console.log("New Device ID: " + req.body.deviceID + " added to user " + user.email);
+                });
+
+                resJSON.registeredToUser = true;
+            })
+
             //Create new Device to save
             let newDevice = new Device({
                 deviceID: req.body.deviceID,
-                APIKey: newKey
+                APIKey: newKey,
+                ownerEmail: req.body.email
             });
 
             //Save Device
@@ -62,9 +76,9 @@ router.post("add", function(req, res, next){
                     return res.status(400).json(resJSON);
                 }
                 else{
-                    resJSON.registered = true;
+                    resJSON.registeredToDb = true;
                     resJSON.APIKey = newKey;
-                    resJSON.deviceID = req.body.deviceID;
+                    resJSON.deviceID = newDevice.deviceID;
                     resJSON.message = "Device " + req.body.deviceID + " has been successfully registered.";
                     return res.status(201).json(resJSON);
                 }
@@ -73,3 +87,58 @@ router.post("add", function(req, res, next){
     });
 
 });
+
+router.post('/measurement', function(req, eres, next){
+
+    let resJSON = {
+        recorded: false,
+        message: "",
+        avgBPM: -1.0,
+    };
+
+    //Check that all necessary info for measurements is present
+    if(!req.body.hasOwnProperty("deviceID")){
+        resJSON.message = "Missing device ID";
+        return res.status(400).json(resJSON);
+    }
+
+    if(!req.body.hasOwnProperty("APIKey")){
+        resJSON.message = "Missing device API Key";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty("avgBPM")){
+        resJSON.message = "Missing heart rate measurement";
+        return res.status(400).json(resJSON);
+    }
+
+    //Find device and add heart rate measurement to readings array
+    Device.findOne({deviceID: req.body.deviceID}, function(err, device){
+        if(err){
+            return res.status(400).json({success: false, message: "Unknown database error"});
+        }
+        else{
+            //Verify matching API key
+            if(device.APIKey !== req.body.APIKey){
+                resJSON.message = "Invalid API for device";
+                return res.status(401).json(resJSON);
+            }
+            else{
+                //Add reading to array for device
+                device.readings.push(req.body.avgBPM);
+                device.save(function(err, device){
+                    console.log("New entry of : " + req.body.avgBPM + " BPM added!");
+                });
+
+                resJSON.recorded = true;
+                resJSON.message = "New entry of : " + req.body.avgBPM + " BPM added!";
+                resJSON.avgBPM = req.body.avgBPM;
+
+                return res.status(200).json(resJSON);
+            }
+        }
+    });
+
+});
+
+
+module.exports = router;

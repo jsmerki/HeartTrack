@@ -12,7 +12,21 @@ function getInfoSuccess(data, textStatus, jqXHR){
     $("#userEmail").text(data.email);
     $("#fullName").text(data.fullName);
     $("#lastAccess").text(data.lastAccess);
-    console.log("Date: " + data.lastAccess);
+
+    let devicesDisplay = $("#userDevicesDisplay")
+
+    if(data.devices.length > 0){
+        $("#noDevices").hide();
+        for(let deviceID of data.devices){
+            devicesDisplay.append("<li>Device ID: " + deviceID +  "<button id='ping-" + deviceID +
+                "' class='btn btn btn-primary'>PING</button>" + "</li>")
+
+            $("#ping-" + deviceID).click(function(event){
+                pingDevice(event, deviceID);
+            })
+        }
+    }
+
 }
 
 function getInfoFailure(jqXHR, textStatus, errorThrown) {
@@ -24,12 +38,17 @@ function getInfoFailure(jqXHR, textStatus, errorThrown) {
     }
 }
 
+function showAddDeviceForm(){
+    $("#addDeviceForm").hide();
+    $("#deviceInput").show();
+}
+
 function addNewDeviceRequest(){
-    let email = $("#email").val();
+    let email = $("#userEmail").text();
     let deviceID = $("#deviceID").val();
 
     $.ajax({
-        url: '/devices/add',
+        url: '/device/add',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({email:email, deviceID: deviceID}),
@@ -38,12 +57,12 @@ function addNewDeviceRequest(){
         .done(newDeviceSuccess)
         .fail(newDeviceError);
 
-
 }
 
 function newDeviceSuccess(data, textStatus, jqXHR){
-   //Reload page to show newly added device?
-    window.location = "/user/profile"
+    //Reload page to show newly added device?
+    // window.location = "/user/profile"
+    console.log("You did it!");
 }
 
 function newDeviceError(jqXHR, textStatus, errorThrown){
@@ -61,5 +80,6 @@ $().ready(function(){
         getAccountInfoRequest();
     }
 
-    //$("#addDevice").click(addNewDeviceRequest);
+    $("#addDeviceForm").click(showAddDeviceForm);
+    $("#addDevice").click(addNewDeviceRequest);
 })

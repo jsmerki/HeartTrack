@@ -20,7 +20,14 @@
             <p><span id="lastAccess"></span></p>
         </div>
         <div class="col-md">
-            No devices added yet!
+            <p id="noDevices">No devices added yet!</p>
+            <ol id="userDevicesDisplay"></ol>
+            <button class="btn btn btn-primary btn-block" id="addDeviceForm">Register New Device</button>
+            <div id="deviceInput" style="display: none">
+                <label for="deviceID" class="sr-only">New Device ID</label>
+                <input type="text" id="deviceID" class="form-control" placeholder="Device ID" required autofocus>
+                <button class="btn btn btn-primary btn-block" id="addDevice">Add Device</button>
+            </div>
         </div>
     </div>
 </main>
