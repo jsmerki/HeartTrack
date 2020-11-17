@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 let Device = require('../models/device');
 let User = require('../models/user');
+var Particle = require('particle-api-js');
 
 
 //Generate random API key
@@ -16,7 +17,7 @@ function getNewApikey() {
     return newApikey;
 }
 
-//Add new device
+//Add new device to database collection of devices
 router.post('/add', function(req, res, next){
 
     let resJSON = {
@@ -88,6 +89,7 @@ router.post('/add', function(req, res, next){
 
 });
 
+//Add measurement to posting device's array of measurements
 router.post('/measurement', function(req, eres, next){
 
     let resJSON = {
@@ -140,5 +142,54 @@ router.post('/measurement', function(req, eres, next){
 
 });
 
+//Endpoint to give device its API key after it's added
+router.post('/key', function(req, res, next){
+
+    let resJSON = {
+        keyset: false,
+        message: "",
+    };
+    console.log("In key endpoint");
+
+    //Verify deviceID and APIKey are present
+    if(!req.body.hasOwnProperty("deviceID")){
+        resJSON.message = "Missing device ID";
+        return res.status(400).json(resJSON);
+    }
+
+    if(!req.body.hasOwnProperty("APIKey")){
+        resJSON.message = "Missing device API Key";
+        return res.status(400).json(resJSON);
+    }
+
+    var particle = new Particle();
+    let email = process.env.CLOUD_EMAIL;
+    let password = process.env.CLOUD_PASSWORD;
+    console.log(email);
+    console.log(password);
+
+    //Login to Particle to access API, then call function on device to set key
+    particle.login({username: email, password: password}).then(
+        function(data) {
+            console.log("Login success!");
+            let token = data.body.access_token;
+
+            var fnPr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setAPIKey',
+                argument: req.body.APIKey , auth: token });
+
+            fnPr.then(
+                function(data) {
+                    console.log('Function called succesfully:', data);
+                }, function(err) {
+                    console.log('An error occurred:', err);
+                }
+            );
+        },
+        function (err) {
+            console.log('Could not log in.', err);
+        }
+    );
+
+});
 
 module.exports = router;

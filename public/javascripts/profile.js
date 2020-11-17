@@ -38,6 +38,7 @@ function getInfoFailure(jqXHR, textStatus, errorThrown) {
     }
 }
 
+
 function showAddDeviceForm(){
     $("#addDeviceForm").hide();
     $("#deviceInput").show();
@@ -60,9 +61,21 @@ function addNewDeviceRequest(){
 }
 
 function newDeviceSuccess(data, textStatus, jqXHR){
-    //Reload page to show newly added device?
-    // window.location = "/user/profile"
+    //Reload page to show newly added device
+    window.location = "/user/profile"
     console.log("You did it!");
+
+
+    //Give API key to newly registered device
+    //FIXME: Add listeners
+    $.ajax({
+        url: '/device/key',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
+        dataType: 'json'
+    });
+
 }
 
 function newDeviceError(jqXHR, textStatus, errorThrown){

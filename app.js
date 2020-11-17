@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var nunjucks = require('nunjucks');
 
+require('dotenv').config()
+
 var app = express();
 
 nunjucks.configure(path.join(__dirname, 'public'), {
