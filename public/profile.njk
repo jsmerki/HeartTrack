@@ -5,13 +5,22 @@
     <script type="application/javascript" src="/javascripts/profile.js"></script>
 {% endblock %}
 
+{% block styles %}
+    {{  super() }}
+    <style type="text/css">
+        .card {
+            margin: 2em;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 <main role="main" class="inner cover container text-left">
     <div class="row mb-5">
         <h1 id="infoHeader">User Profile</h1>
     </div>
     <div class="row">
-        <div class="col-md">
+        <div class="col-md w-50">
             <strong>Email:</strong>
             <p><span id="userEmail"></span></p>
             <strong>Full Name:</strong>
@@ -19,16 +28,52 @@
             <strong>Last Accessed:</strong>
             <p><span id="lastAccess"></span></p>
         </div>
-        <div class="col-md">
-            <p id="noDevices">No devices added yet!</p>
-            <ol id="userDevicesDisplay"></ol>
-            <button class="btn btn btn-primary btn-block" id="addDeviceForm">Register New Device</button>
-            <div id="deviceInput" style="display: none">
+        <div class="flex-md-column w-75 h-100 align-items-center">
+            <p id="noDevices" style="display:none">No devices added yet!</p>
+            <button class="btn btn-primary btn-block w-50 mx-auto " id="addDeviceForm">Register New Device</button>
+            <div id="deviceInput" class="w-75 mx-auto" style="display: none">
+                <label for="friendlyName" class="sr-only">Friendly Name for Device:</label>
+                <input type="text" id="friendlyName" class="form-control mb-2" placeholder="Friendly Name" required>
                 <label for="deviceID" class="sr-only">New Device ID</label>
-                <input type="text" id="deviceID" class="form-control" placeholder="Device ID" required autofocus>
+                <input type="text" id="deviceID" class="form-control mb-2" placeholder="Device ID" required autofocus>
+
                 <button class="btn btn btn-primary btn-block" id="addDevice">Add Device</button>
+
+                <div class="alert alert-danger mt-2 text-center" id="deviceCreationErrorResponse" role="alert"></div>
             </div>
         </div>
     </div>
+    <div class="row d-flex flex-wrap" id="userDevicesDisplay">
+        <div class="alert alert-danger mt-2 text-center" id="deviceDeletionErrorResponse" role="alert"></div>
+    </div>
 </main>
+
+<!-- Button trigger modal -->
+{#<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">#}
+{#    Launch static backdrop modal#}
+{#</button>#}
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Are you sure you want to delete this device?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deleting this device cannot be undone!</p>
+                <p>You will lose all readings associated with this device.</p>
+                <p>Only click 'Delete' if you're absolutely sure!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

@@ -7,7 +7,7 @@ let deviceSchema = new db.Schema({
     ownerEmail:     { type: String },
     dateRegistered: { type: Date, default: Date.now },
     lastRead:       { type: Date, default: Date.now },
-    readings:       [ String ],
+    readings:       [ Object ],
 });
 
 let Device = db.model("Device", deviceSchema);
