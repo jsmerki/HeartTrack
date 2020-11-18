@@ -126,7 +126,7 @@ router.get('/account', function(req, res, next){
             userInfo["email"] = user.email;
             userInfo["fullName"] = user.fullName;
             userInfo["lastAccess"] = user.lastAccess;
-            console.log(user.lastAccess.toDateString());
+            userInfo["devices"] = user.userDevices;
           }
 
           return res.status(200).json(userInfo);

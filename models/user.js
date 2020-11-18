@@ -6,7 +6,7 @@ let userSchema = new db.Schema({
     passwordHash:   String,
     dateRegistered: { type: Date, default: Date.now },
     lastAccess:     { type: Date, default: Date.now },
-    userDevices:    [ String ],
+    userDevices:    [ Object ],
 });
 
 let User = db.model("User", userSchema);

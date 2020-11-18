@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
@@ -23,6 +24,7 @@
     "mongoose": "^5.10.14",
     "morgan": "~1.9.1",
     "nunjucks": "^3.2.2",
+    "particle-api-js": "^9.0.2",
     "plotly": "^1.0.6",
     "popper": "^1.0.1",
     "popper.js": "^1.16.1"
