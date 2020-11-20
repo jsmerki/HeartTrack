@@ -19,8 +19,10 @@ function getStatsSuccess(data, textStatus, jqXHR){
             ' <td class="bloodOxygen">[Timestamp]</td>' +
             ' <td class="deviceID">[Timestamp]</td>' +
             '</tr>');
-
-        rowString.find('.dateTime').text(statistic.measureTime);
+	let timestamp = new Date(statistic.measureTime);
+	let dateString = timestamp.toLocaleDateString('en-US', {timeZone: 'America/Phoenix'});
+	let timeString = timestamp.toLocaleTimeString('en-US', {timeZone: 'America/Phoenix'});
+        rowString.find('.dateTime').text(dateString + ' ' + timeString);
         rowString.find('.heartRate').text(statistic.heartRate);
         rowString.find('.bloodOxygen').text(statistic.bloodOxygen);
         rowString.find('.deviceID').text(statistic.deviceID);

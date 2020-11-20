@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let plotly = require('plotly');
 let Statistic = require('../models/statistic');
+let Device = require('../models/device');
 
 let jwt = require("jwt-simple");
 let jwtSecretKey = "Bsd8-fn35sN2sj4dbv/43sDKvbsd8jvbs9KD"
@@ -44,6 +45,7 @@ router.get('/getStatistics', function(req, res, next) {
 
 //Add measurement to posting device's array of measurements
 router.post('/measurement', function(req, res, next){
+  console.log("test");
 
   let resJSON = {
     recorded: false,
@@ -73,7 +75,7 @@ router.post('/measurement', function(req, res, next){
     resJSON.message = "Missing timestamp.";
     return res.status(400).json(resJSON);
   }
-
+  console.log("all attributes");
   //Find device and add heart rate measurement to readings array
   Device.findOne({deviceID: req.body.deviceID}, function(err, device){
     if(err){
@@ -89,12 +91,14 @@ router.post('/measurement', function(req, res, next){
         return res.status(401).json(resJSON);
       }
       else{
-
+	console.log('timestamp' + req.body.published_at);
+	console.log(new Date(req.body.published_at));
+	console.log("test");
         let measurement = new Statistic( {
           deviceID: req.body.deviceID,
           heartRate: req.body.avgBPM,
           bloodOxygen: req.body.spo2,
-          measureTime: req.body.published_at
+          measureTime: new Date(req.body.published_at)
         })
         console.log(measurement);
 
