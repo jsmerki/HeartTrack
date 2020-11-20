@@ -47,7 +47,8 @@ function addNewDeviceRequest(){
         .fail(newDeviceError);
 }
 
-function newDeviceError(jqXHR, textStatus, errorThrown){
+function newDeviceError(jqXHR, textStatus, errorThrown) {
+    getDevices();
     $("#deviceCreationErrorResponse").text(jqXHR.responseJSON.message);
     $("#deviceCreationErrorResponse").show();
 }
@@ -123,16 +124,18 @@ function generateCards(deviceData) {
 
         let cardHTMLString = $(
             '<div class="card bg-light mb-3" style="width: 18rem;">\n' +
-            ' <div class="card-header">Placeholder ID</div>' +
+            ' <div class="card-header">Placeholder Name</div>' +
             '  <div class="card-body">\n' +
-            '    <h5 class="card-title mb-3">Placeholder Name</h5>\n' +
+            '    <h5 class="card-title mb-3">Placeholder ID</h5>' +
+            '    <p class="card-text">Placeholder APIKey</p>' +
             '   <div class="col text-center"><a href="#" class="btn btn-primary">Ping</a></div>\n' +
             '  </div>\n' +
             '</div>');
 
 
-        cardHTMLString.find('.card-header').text('Device ID: ' + device.deviceID);
-        cardHTMLString.find('.card-title').text(device.friendlyName);
+        cardHTMLString.find('.card-header').text(device.friendlyName);
+        cardHTMLString.find('.card-title').text('Device ID: ' + device.deviceID);
+        cardHTMLString.find('.card-text').text('Device APIKey: ' + device.APIKey);
 
         // Append close button to card
         cardHTMLString.find('.card-header').append(

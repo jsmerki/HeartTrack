@@ -105,67 +105,6 @@ router.post('/add', function(req, res, next){
     }
 });
 
-//Add measurement to posting device's array of measurements
-router.post('/measurement', function(req, res, next){
-
-    let resJSON = {
-        recorded: false,
-        message: "",
-        avgBPM: -1.0,
-    };
-
-    //Check that all necessary info for measurements is present
-    if(!req.body.hasOwnProperty("deviceID")){
-        resJSON.message = "Missing device ID";
-        return res.status(400).json(resJSON);
-    }
-
-    if(!req.body.hasOwnProperty("APIKey")){
-        resJSON.message = "Missing device API Key";
-        return res.status(400).json(resJSON);
-    }
-    if(!req.body.hasOwnProperty("avgBPM")){
-        resJSON.message = "Missing heart rate measurement";
-        return res.status(400).json(resJSON);
-    }
-
-    if(!req.body.hasOwnProperty("spo2")){
-        resJSON.message = "Missing oxygenation measurement";
-        return res.status(400).json(resJSON);
-    }
-
-    //Find device and add heart rate measurement to readings array
-    Device.findOne({deviceID: req.body.deviceID}, function(err, device){
-        if(err){
-            return res.status(400).json({success: false, message: "Unknown database error"});
-        }
-        else if(device == null){
-            return res.status(400).json({success: false, message: "Device does not exist in database"});
-        }
-        else{
-            //Verify matching API key
-            if(device.APIKey !== req.body.APIKey){
-                resJSON.message = "Invalid API for device";
-                return res.status(401).json(resJSON);
-            }
-            else{
-                //Add reading to array for device
-                device.readings.push({avgBPM: req.body.avgBPM, spo2: req.body.spo2});
-                device.save(function(err, device){
-                    console.log("New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!");
-                });
-
-                resJSON.recorded = true;
-                resJSON.message = "New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!";
-                resJSON.avgBPM = req.body.avgBPM;
-
-                return res.status(200).json(resJSON);
-            }
-        }
-    });
-
-});
-
 
 //Endpoint to give device its API key after it's added
 router.post('/key', function(req, res, next){
@@ -248,7 +187,7 @@ router.get('/list', function(req, res, next) {
                 }
 
                 return res.status(200).json(responseDevices);
-            })
+            });
         } catch (exc){
             return res.status(401).json({ success: false, message: "Invalid authentication token."});
         }

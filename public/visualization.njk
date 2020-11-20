@@ -7,8 +7,23 @@
 
 
 {% block content %}
-    <div role="main" class="inner cover container-fluid align-self-start mainContent">
+    <div role="main" class="inner cover container align-self-start mainContent">
         <h1 class="cover-heading">HeartTrack Health Monitoring</h1>
         <p class="lead">Track your readings on this page. Keep charge of your health.</p>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Time Measured</th>
+                        <th scope="col">Heart Rate</th>
+                        <th scope="col">Blood Oxygen</th>
+                        <th scope="col">deviceID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 {% endblock %}
