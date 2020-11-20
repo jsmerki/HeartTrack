@@ -49,8 +49,6 @@ router.post('/measurement', function(req, res, next){
     recorded: false,
     message: "",
     avgBPM: -1.0,
-    spo2: 0,
-    timestamp: {}
   };
 
   //Check that all necessary info for measurements is present
@@ -98,6 +96,8 @@ router.post('/measurement', function(req, res, next){
           bloodOxygen: req.body.spo2,
           measureTime: req.body.published_at
         })
+        console.log(measurement);
+
 
         //Add statistic to array for device
         device.readings.push(measurement);
@@ -106,7 +106,7 @@ router.post('/measurement', function(req, res, next){
         });
 
         measurement.save(function (err, measurement) {
-          console.log("New Measurement Saved. ID: " + measurement._id);
+          console.log("New Measurement Saved. ID: " + measurement);
         });
 
         resJSON.recorded = true;
@@ -114,8 +114,8 @@ router.post('/measurement', function(req, res, next){
             " %O2 added at" + req.body.published_at + " !";
 
         resJSON.avgBPM = req.body.avgBPM;
-        resJSON.spo2 = -1.0;
-        resJSON.timestamp=  -1.0;
+        // resJSON.spo2 = -1.0;
+        // resJSON.timestamp=  -1.0;
 
         return res.status(200).json(resJSON);
       }
