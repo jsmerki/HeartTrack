@@ -150,9 +150,9 @@ router.post('/measurement', function(req, res, next){
             }
             else{
                 //Add reading to array for device
-                device.readings.push({avgBPM: req.body.avgBPM, spo2: req.body.spo2});
+                device.readings.push({avgBPM: req.body.avgBPM, spo2: req.body.spo2, timestamp: req.body.published_at});
                 device.save(function(err, device){
-                    console.log("New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!");
+                    console.log(req.body.published_at + " :New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!");
                 });
 
                 resJSON.recorded = true;
