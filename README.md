@@ -15,7 +15,7 @@ retrieved in a separate endpoint in order to display them to the user.
 Usage:
 ---------------------------------------
 $.ajax({
-url: https://3.129203.46:3000/health/measurement,
+url: https://3.129.203.46:3000/health/measurement,
 type: POST,
 contentType: 'application/json',
 data: {  
