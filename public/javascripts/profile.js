@@ -43,7 +43,7 @@ function addNewDeviceRequest(){
         data: JSON.stringify({friendlyName: friendlyName, deviceID: deviceID}),
         dataType: 'json'
     })
-        .done(getDevices)
+        .done(newDeviceSuccess)
         .fail(newDeviceError);
 }
 
@@ -63,7 +63,8 @@ function newDeviceSuccess(data, textStatus, jqXHR) {
         contentType: 'application/json',
         data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
         dataType: 'json'
-    });
+    })
+        .done(getDevices);
 };
 
 

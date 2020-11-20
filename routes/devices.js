@@ -1,5 +1,4 @@
 var express = require('express');
-let jQuery = require('jQuery');
 var router = express.Router();
 let Device = require('../models/device');
 let User = require('../models/user');
@@ -107,7 +106,7 @@ router.post('/add', function(req, res, next){
 });
 
 //Add measurement to posting device's array of measurements
-router.post('/measurement', function(req, eres, next){
+router.post('/measurement', function(req, res, next){
 
     let resJSON = {
         recorded: false,
@@ -130,10 +129,18 @@ router.post('/measurement', function(req, eres, next){
         return res.status(400).json(resJSON);
     }
 
+    if(!req.body.hasOwnProperty("spo2")){
+        resJSON.message = "Missing oxygenation measurement";
+        return res.status(400).json(resJSON);
+    }
+
     //Find device and add heart rate measurement to readings array
     Device.findOne({deviceID: req.body.deviceID}, function(err, device){
         if(err){
             return res.status(400).json({success: false, message: "Unknown database error"});
+        }
+        else if(device == null){
+            return res.status(400).json({success: false, message: "Device does not exist in database"});
         }
         else{
             //Verify matching API key
@@ -143,13 +150,13 @@ router.post('/measurement', function(req, eres, next){
             }
             else{
                 //Add reading to array for device
-                device.readings.push(req.body.avgBPM);
+                device.readings.push({avgBPM: req.body.avgBPM, spo2: req.body.spo2});
                 device.save(function(err, device){
-                    console.log("New entry of : " + req.body.avgBPM + " BPM added!");
+                    console.log("New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!");
                 });
 
                 resJSON.recorded = true;
-                resJSON.message = "New entry of : " + req.body.avgBPM + " BPM added!";
+                resJSON.message = "New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!";
                 resJSON.avgBPM = req.body.avgBPM;
 
                 return res.status(200).json(resJSON);
@@ -198,13 +205,20 @@ router.post('/key', function(req, res, next){
             fnPr.then(
                 function(data) {
                     console.log('Function called succesfully:', data);
+                    resJSON.keyset = true;
+                    resJSON.message = "API Key set for new device ID: " + req.body.deviceID;
+                    return res.status(200).json(resJSON);
                 }, function(err) {
                     console.log('An error occurred:', err);
+                    resJSON.message = "Could not call function" ;
+                    return res.status(400).json(resJSON);
                 }
             );
         },
         function (err) {
             console.log('Could not log in.', err);
+            resJSON.message = "Could not log in to Particle" ;
+            return res.status(401).json(resJSON);
         }
     );
 
@@ -296,53 +310,4 @@ router.post('/remove', function(req, res, next) {
 
 });
 
-//Endpoint to give device its API key after it's added
-router.post('/key', function(req, res, next){
-
-    let resJSON = {
-        keyset: false,
-        message: "",
-    };
-    console.log("In key endpoint");
-
-    //Verify deviceID and APIKey are present
-    if(!req.body.hasOwnProperty("deviceID")){
-        resJSON.message = "Missing device ID";
-        return res.status(400).json(resJSON);
-    }
-
-    if(!req.body.hasOwnProperty("APIKey")){
-        resJSON.message = "Missing device API Key";
-        return res.status(400).json(resJSON);
-    }
-
-    var particle = new Particle();
-    let email = process.env.CLOUD_EMAIL;
-    let password = process.env.CLOUD_PASSWORD;
-    console.log(email);
-    console.log(password);
-
-    //Login to Particle to access API, then call function on device to set key
-    particle.login({username: email, password: password}).then(
-        function(data) {
-            console.log("Login success!");
-            let token = data.body.access_token;
-
-            var fnPr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setAPIKey',
-                argument: req.body.APIKey , auth: token });
-
-            fnPr.then(
-                function(data) {
-                    console.log('Function called succesfully:', data);
-                }, function(err) {
-                    console.log('An error occurred:', err);
-                }
-            );
-        },
-        function (err) {
-            console.log('Could not log in.', err);
-        }
-    );
-
-});
 module.exports = router;
