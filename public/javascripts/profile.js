@@ -52,8 +52,7 @@ function newDeviceError(jqXHR, textStatus, errorThrown){
     $("#deviceCreationErrorResponse").show();
 }
 
-
-function newDeviceSuccess(data, textStatus, jqXHR) {
+function newDeviceSuccess(data, textStatus, jqXHR){
 
     //Give API key to newly registered device
     //FIXME: Add listeners
@@ -64,8 +63,7 @@ function newDeviceSuccess(data, textStatus, jqXHR) {
         data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
         dataType: 'json'
     });
-};
-
+}
 
 // Remove device
 function removeDeviceRequest(event){
@@ -83,20 +81,6 @@ function removeDeviceRequest(event){
         .done(getDevices)
         .fail(removeDeviceError);
 }
-
-function newDeviceSuccess(data, textStatus, jqXHR){
-
-    //Give API key to newly registered device
-    //FIXME: Add listeners
-    $.ajax({
-        url: '/device/key',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
-        dataType: 'json'
-    });
-}
-
 
 function removeDeviceError(jqXHR, textStatus, errorThrown){
     $("#deviceDeletionErrorResponse").text(jqXHR.responseJSON.message);
