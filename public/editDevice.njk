@@ -1,0 +1,81 @@
+{% extends "base.njk" %}
+
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/editDevice.js"></script>
+{% endblock %}
+
+{% block styles %}
+    {{  super() }}
+    <link href="/stylesheets/signin.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div role="main" class="inner cover container">
+        <h1 class="cover-heading mb-4">Edit Device Information</h1>
+
+        <div class="w-75 container" id="deviceNotFound" style="display:none;color:darkred;">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <strong>No Device found with that ID.</strong>
+                <p>Please double check your ID or contact an administrator.</p>
+            </div>
+        </div>
+
+        <form class="form-signin w-50" novalidate>
+            <div>
+                <label for="deviceID" class="sr-only">Device ID</label>
+                <input id="deviceID" class="form-control mb-2" placeholder="Device ID" disabled>
+            </div>
+
+            <div>
+                <label for="APIKey" class="sr-only">APIKey</label>
+                <input type="text" id="APIKey" class="form-control mb-2" placeholder="APIKey" disabled>
+            </div>
+
+            <div>
+                <label for="friendlyName" class="sr-only">Friendly Name</label>
+                <input type="text" id="friendlyName" class="form-control mb-2" placeholder="Friendly Name">
+            </div>
+
+            <div>
+                <label for="dateRegistered" class="sr-only">Date Registered</label>
+                <input type="text" id="dateRegistered" class="form-control mb-2" placeholder="Date Registered" disabled>
+            </div>
+
+            <div>
+                <label for="lastRead" class="sr-only">Last Reading</label>
+                <input type="text" id="lastRead" class="form-control mb-2" placeholder="Last Reading" disabled>
+            </div>
+            <div>
+                <label for="measureInterval" class="sr-only">Measurement Interval</label>
+                <input type="text" id="measureInterval" class="form-control mb-2" placeholder="Measurement Interval">
+            </div>
+            <div>
+                <label for="startTime" class="sr-only">Daily Start Time</label>
+                <input type="text" id="startTime" class="form-control mb-2" placeholder="Daily Start Time">
+            </div>
+            <div>
+                <label for="endTime" class="sr-only">Daily End Time</label>
+                <input type="text" id="endTime" class="form-control mb-2" placeholder="Daily End Time">
+            </div>
+
+            <button class="btn btn btn-primary btn-block registerSubmit mt-4 mb-4" type="submit">Submit</button>
+
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <strong>Information update failed.</strong>
+                <p>Please try again or contact an administrator.</p>
+            </div>
+
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <strong>Information updated successfully!</strong>
+                <p>Redirecting you to your <a href="/user/profile" class="alert-link">profile page...</a> </p>
+            </div>
+
+            <button id="ping" class="btn btn btn-primary" style="display:none;">Ping Device</button>
+
+
+
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+        </form>
+    </div>
+{% endblock %}

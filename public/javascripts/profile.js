@@ -1,4 +1,7 @@
-// Get user's information
+/* ************** *
+ *  Get User Info *
+ * ************** */
+
 function getAccountInfoRequest(){
     $.ajax({
         url: '/user/account',
@@ -24,13 +27,14 @@ function getInfoFailure(jqXHR, textStatus, errorThrown) {
     }
 }
 
-
+/* ****************** *
+ * Adding New Devices *
+ * ****************** */
 function showAddDeviceForm(){
     $("#addDeviceForm").hide();
     $("#deviceInput").show();
 }
 
-// Create a new device
 function addNewDeviceRequest(){
     let deviceID = $("#deviceID").val();
     let friendlyName = $("#friendlyName").val();
@@ -50,19 +54,6 @@ function addNewDeviceRequest(){
 function newDeviceError(jqXHR, textStatus, errorThrown){
     $("#deviceCreationErrorResponse").text(jqXHR.responseJSON.message);
     $("#deviceCreationErrorResponse").show();
-}
-
-function newDeviceSuccess(data, textStatus, jqXHR){
-
-    //Give API key to newly registered device
-    //FIXME: Add listeners
-    $.ajax({
-        url: '/device/key',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
-        dataType: 'json'
-    });
 }
 
 // Remove device
@@ -88,7 +79,10 @@ function removeDeviceError(jqXHR, textStatus, errorThrown){
 }
 
 
-// Request user's list of devices
+/* ***************** *
+ *  Get User Devices *
+ * ***************** */
+
 function getDevices(){
     $.ajax({
         url: '/device/list',
@@ -98,6 +92,25 @@ function getDevices(){
     })  .done(getDevicesSuccess)
         .fail(getDevicesFailure);
 }
+
+function getDevicesSuccess(data, textStatus, jqXHR){
+    $("#deviceCreationErrorResponse").hide();
+    $(".card").remove();
+    if(data.length > 0) {
+        generateCards(data);
+    }
+
+}
+
+function getDevicesFailure(jqXHR, textStatus, errorThrown){
+    $("#deviceCreationErrorResponse").text(jqXHR.responseJSON.message);
+    $("#deviceCreationErrorResponse").show();
+}
+
+
+/* ****************************** *
+ *  Generate Device Display Cards *
+ * ****************************** */
 
 function generateCards(deviceData) {
     let devicesDisplay = $("#userDevicesDisplay");
@@ -128,9 +141,8 @@ function generateCards(deviceData) {
             $('.confirmDelete').click({deviceID:device.deviceID}, removeDeviceRequest);
         });
 
-        cardHTMLString.find('a').html('<button id="ping-' + device.deviceID + '" class="btn btn btn-primary">Ping Device</button>').click(function (event) {
-            console.log('pinging');
-            pingDevice(event, device.deviceID);
+        cardHTMLString.find('a').html('<button id="edit-' + device.deviceID + '" class="btn btn btn-primary">Edit Device</button>').click(function (event) {
+            window.location = ('/device/edit?deviceID=' + device.deviceID);
         });
 
         devicesDisplay.append(cardHTMLString);
@@ -138,19 +150,6 @@ function generateCards(deviceData) {
     }
 }
 
-function getDevicesSuccess(data, textStatus, jqXHR){
-    $("#deviceCreationErrorResponse").hide();
-    $(".card").remove();
-    if(data.length > 0) {
-        generateCards(data);
-    }
-
-}
-
-function getDevicesFailure(jqXHR, textStatus, errorThrown){
-    $("#deviceCreationErrorResponse").text(jqXHR.responseJSON.message);
-    $("#deviceCreationErrorResponse").show();
-}
 
 
 //Add click listener for add device button
