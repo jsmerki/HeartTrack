@@ -241,6 +241,100 @@ router.get('/list', function(req, res, next) {
     }
 });
 
+/* getOne device. */
+router.get('/getOne', function(req, res, next) {
+    if(req.query.deviceID.length < 1) {
+        resJSON.message = "Missing device ID.";
+        return res.status(400).json(resJSON);
+    }
+    Device.findOne({deviceID: req.query.deviceID}, function(err, device){
+
+        if(err) {
+            return res.status(400).json({success: false, message: "Unknown database error"});
+        }
+
+        responseDevice = {
+            deviceID: device.deviceID,
+            APIKey: device.APIKey,
+            friendlyName: device.friendlyName,
+            ownerEmail: device.ownerEmail,
+            dateRegistered: device.dateRegistered,
+            lastRead: device.lastRead,
+            measureInterval: device.measureInterval,
+            startTime: device.startTime,
+            endTime: device.endTime
+        }
+
+        return res.status(200).json(responseDevice);
+    })
+
+});
+
+/* EDIT device. */
+router.get('/edit', function(req, res, next) {
+    res.render('editDevice.njk', { title: 'Express' });
+});
+
+/* EDIT device. */
+router.post('/edit', function(req, res, next) {
+    console.log('error entirely');
+    if(!req.body.hasOwnProperty('deviceID')) {
+        resJSON.message = "Missing device ID.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('friendlyName')) {
+        resJSON.message = "Missing device friendly name.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('measureInterval')) {
+        resJSON.message = "Missing measure interval.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('startTime')) {
+        resJSON.message = "Missing start time.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('endTime')) {
+        resJSON.message = "Missing end time.";
+        return res.status(400).json(resJSON);
+    }
+
+    console.log('has all properties');
+    if(!req.headers["x-auth"]){
+        console.log('no auth');
+        return res.status(400).json({success: false, message: "Auth token not provided."});
+    }
+    else{
+        console.log('authed');
+        let token = req.headers["x-auth"];
+        let responseDevices = [];
+
+        try{
+            let decToken = jwt.decode(token, jwtSecretKey)
+
+            Device.findOne({deviceID: req.body.deviceID}, function(err, device){
+
+                if(err) {
+                    return res.status(400).json({success: false, message: "Unknown database error"});
+                }
+                if(device.ownerEmail != decToken.email){
+                    return res.status(400).json({success: false, message: "Device does not belong to user."});
+                }
+
+                device.friendlyName = req.body.friendlyName;
+                device.measureInterval = req.body.measureInterval;
+                device.timeStart = req.body.startTime;
+                device.timeEnd = req.body.endTime;
+
+                device.save();
+                return res.status(201).json({success: true, message: "Successfully edited device."});
+            })
+        } catch (exc){
+            return res.status(401).json({ success: false, message: "Invalid authentication token."});
+        }
+    }
+});
+
 // Remove a specific device
 router.post('/remove', function(req, res, next) {
 

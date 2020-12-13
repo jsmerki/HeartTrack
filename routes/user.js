@@ -104,6 +104,78 @@ router.get('/profile', function(req, res, next) {
   res.render('profile.njk', { title: 'Express' });
 });
 
+// Account Editing Page
+router.get('/profile/edit', function(req, res, next) {
+  res.render('edit.njk', { title: 'Express' });
+});
+
+// Account Edit Processing
+router.post('/profile/edit', function(req, res, next) {
+
+  //Error checking, confirm ID
+  if(!req.body.hasOwnProperty("fullName") || (req.body.fullName.length < 1)){
+    resJSON.message = "Missing Full Name field.";
+    return res.status(400).json(resJSON);
+  }
+
+  //Use friendlyName in request
+  if(!req.body.hasOwnProperty("password")){
+    resJSON.message = "Missing password data.";
+    return res.status(400).json(resJSON);
+  }
+
+  let noPassUpdate = false;
+  if ( req.body.password.length < 1) {
+    noPassUpdate = true;
+  }
+  // Password Hashing and Database Entry Creation
+  bcrypt.hash(req.body.password, 10, function(err, hash) {
+    if (err) {
+      console.log("Hash: " + err.errmsg);
+      return res.status(400).json({success: false, message: err.errmsg});
+    }
+    else {
+
+      if (!req.headers["x-auth"]) {
+        return res.status(400).json({success: false, message: "Auth token not provided."});
+      }
+      else {
+
+        let token = req.headers["x-auth"];
+
+        try {
+          let decToken = jwt.decode(token, jwtSecretKey);
+          User.findOne({email: decToken.email}, function (err, user) {
+            if (err) {
+              res.status(400).json({success: false, message: "Unknown database error"});
+            } else {
+              user.fullName = req.body.fullName;
+              if(!noPassUpdate) {
+                user.password = hash;
+              }
+            }
+            user.save(function(err, user) {
+              if (err) {
+                console.log("Save: " + err.errmsg);
+                return res.status(400).json({success: false,
+                  message: err.errmsg});
+
+              }
+              else {
+                return res.status(201).json({success: true,
+                  message: user.fullName + " has been created."});
+              }
+            })
+          })
+        } catch (exc) {
+          return res.status(401).json({success: false, message: "Invalid authentication token."});
+        }
+      }
+    }
+  });
+
+});
+
 //Get account info to display on profile.njk
 router.get('/account', function(req, res, next){
 
