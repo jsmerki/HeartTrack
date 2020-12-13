@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var nunjucks = require('nunjucks');
-
 require('dotenv').config()
+
 
 var app = express();
 
@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use(express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use(express.static(__dirname + '/node_modules/animejs/lib'));
+app.use(express.static(__dirname + '/node_modules/timepicker'));
 
 // Routing
 app.use('/', indexRouter);
