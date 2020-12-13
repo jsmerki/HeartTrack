@@ -261,8 +261,10 @@ router.get('/getOne', function(req, res, next) {
             dateRegistered: device.dateRegistered,
             lastRead: device.lastRead,
             measureInterval: device.measureInterval,
-            startTime: device.startTime,
-            endTime: device.endTime
+            startTimeHour: device.startTimeHour,
+            startTimeMin: device.startTimeMin,
+            endTimeHour: device.endTimeHour,
+            endTimeMin: device.endTimeMin
         }
 
         return res.status(200).json(responseDevice);
@@ -277,7 +279,6 @@ router.get('/edit', function(req, res, next) {
 
 /* EDIT device. */
 router.post('/edit', function(req, res, next) {
-    console.log('error entirely');
     if(!req.body.hasOwnProperty('deviceID')) {
         resJSON.message = "Missing device ID.";
         return res.status(400).json(resJSON);
@@ -290,24 +291,29 @@ router.post('/edit', function(req, res, next) {
         resJSON.message = "Missing measure interval.";
         return res.status(400).json(resJSON);
     }
-    if(!req.body.hasOwnProperty('startTime')) {
-        resJSON.message = "Missing start time.";
+    if(!req.body.hasOwnProperty('startTimeHour')) {
+        resJSON.message = "Missing start time hour.";
         return res.status(400).json(resJSON);
     }
-    if(!req.body.hasOwnProperty('endTime')) {
-        resJSON.message = "Missing end time.";
+    if(!req.body.hasOwnProperty('startTimeMin')) {
+        resJSON.message = "Missing start time minutes.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('endTimeHour')) {
+        resJSON.message = "Missing end time hour.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('endTimeMin')) {
+        resJSON.message = "Missing end time minutes.";
         return res.status(400).json(resJSON);
     }
 
-    console.log('has all properties');
     if(!req.headers["x-auth"]){
         console.log('no auth');
         return res.status(400).json({success: false, message: "Auth token not provided."});
     }
     else{
-        console.log('authed');
         let token = req.headers["x-auth"];
-        let responseDevices = [];
 
         try{
             let decToken = jwt.decode(token, jwtSecretKey)
@@ -323,8 +329,11 @@ router.post('/edit', function(req, res, next) {
 
                 device.friendlyName = req.body.friendlyName;
                 device.measureInterval = req.body.measureInterval;
-                device.timeStart = req.body.startTime;
-                device.timeEnd = req.body.endTime;
+                device.startTimeHour = req.body.startTimeHour;
+                device.startTimeMin = req.body.startTimeMin;
+                device.endTimeHour = req.body.endTimeHour;
+                device.endTimeMin = req.body.endTimeMin;
+
 
                 device.save();
                 return res.status(201).json({success: true, message: "Successfully edited device."});

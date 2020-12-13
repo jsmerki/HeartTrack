@@ -1,8 +1,10 @@
 function sendDeviceEditRequest() {
     let friendlyName = $('#friendlyName');
     let measureInterval = $('#measureInterval');
-    let startTime = $('#startTime');
-    let endTime = $('#endTime');
+    let startTimeHour = $('#startTimeHour');
+    let endTimeHour = $('#endTimeHour');
+    let startTimeMin = $('#startTimeMin');
+    let endTimeMin = $('#endTimeMin');
 
 
     // Reset form on each submit
@@ -20,19 +22,26 @@ function sendDeviceEditRequest() {
             error = true;
         }
     })
+
     // This is required for some reason??
     $(".requiredField").show();
 
     $("input:not(.invalid-feedback)").addClass('is-valid');
+    $(":disabled").removeClass('is-valid');
 
 
     if(!error) {
         let requestData = {
+            deviceID: new URLSearchParams(window.location.search).get('deviceID'),
             friendlyName: friendlyName.val(),
-            measureInterval: measureInterval.val(),
-            startTime: startTime.val(),
-            endTime: endTime.val(),
+            measureInterval: measureInterval.val()*1,
+            startTimeHour: startTimeHour.val(),
+            endTimeHour: endTimeHour.val(),
+            startTimeMin: startTimeMin.val(),
+            endTimeMin: endTimeMin.val(),
         }
+
+        console.log(requestData);
 
         $.ajax({
             url: '/device/edit',
@@ -69,14 +78,17 @@ function getOneDevice(){
 }
 
 function getOneDeviceSuccess(data, textStatus, jqXHR){
+    console.log(data);
     $('#deviceID').val(data.deviceID);
     $('#APIKey').val(data.APIKey);
     $('#friendlyName').val(data.friendlyName);
     $('#dateRegistered').val(data.dateRegistered);
     $('#lastRead').val(data.lastRead);
     $('#measureInterval').val(data.measureInterval);
-    $('#startTime').val(data.startTime);
-    $('#endTime').val(data.endTime);
+    $('#startTimeHour').val(data.startTimeHour);
+    $('#startTimeMin').val(data.startTimeMin);
+    $('#endTimeHour').val(data.endTimeHour);
+    $('#endTimeMin').val(data.endTimeMin);
 }
 
 function getOneDeviceFailure(jqXHR, textStatus, errorThrown){
@@ -98,9 +110,43 @@ $().ready( function(){
         });
     }
 
+
+    for(let i=1; i<13; i++) {
+        $('#measureInterval').append($('<option>', {
+            value: i*5,
+            text: i*5
+        }));
+    }
+
+    for(let i=0; i<13; i++) {
+        $('#startTimeHour').append($('<option>', {
+            value: i,
+            text: i
+        }));
+        $('#endTimeHour').append($('<option>', {
+            value: i,
+            text: i
+        }));
+    }
+    for(let i=0; i<11; i++) {
+        $('#startTimeMin').append($('<option>', {
+            value: i*5,
+            text: i*5
+        }));
+        $('#endTimeMin').append($('<option>', {
+            value: i*5,
+            text: i*5
+        }));
+    }
+
+
+
     $('form').submit(function(event){
         event.preventDefault();
         event.stopPropagation();
         sendDeviceEditRequest();
     });
+
+
+
 });

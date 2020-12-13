@@ -13,6 +13,11 @@ measurement was submitted which is why the published_at attribute of the ajax ca
 data SHOULD BE INITIALIZED WITH Date.now(). After measurements are stored they will be
 retrieved in a separate endpoint in order to display them to the user.
 
+HTTPS Usage:
+---------------------------------------
+Note that this app utilizes certbot to generate secure SSL certificates. 
+
+
 Usage:
 ---------------------------------------
 $.ajax({

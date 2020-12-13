@@ -21,42 +21,67 @@
             </div>
         </div>
 
-        <form class="form-signin w-50" novalidate>
-            <div>
-                <label for="deviceID" class="sr-only">Device ID</label>
-                <input id="deviceID" class="form-control mb-2" placeholder="Device ID" disabled>
-            </div>
+        <form class="form-signin w-75 text-left" novalidate>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="deviceID" >Device ID</label>
+                    <input id="deviceID" class="form-control" placeholder="Device ID" disabled>
+                </div>
 
-            <div>
-                <label for="APIKey" class="sr-only">APIKey</label>
-                <input type="text" id="APIKey" class="form-control mb-2" placeholder="APIKey" disabled>
+                <div class="form-group col-md-6">
+                    <label for="friendlyName">Friendly Name</label>
+                    <input type="text" id="friendlyName" class="form-control" placeholder="Friendly Name">
+                </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="APIKey">APIKey</label>
+                    <input type="text" id="APIKey" class="form-control" placeholder="APIKey" disabled>
+                </div>
 
-            <div>
-                <label for="friendlyName" class="sr-only">Friendly Name</label>
-                <input type="text" id="friendlyName" class="form-control mb-2" placeholder="Friendly Name">
+                <div class="form-group col-md-6">
+                    <label for="dateRegistered">Date Registered</label>
+                    <input type="text" id="dateRegistered" class="form-control" placeholder="Date Registered" disabled>
+                </div>
             </div>
-
-            <div>
-                <label for="dateRegistered" class="sr-only">Date Registered</label>
-                <input type="text" id="dateRegistered" class="form-control mb-2" placeholder="Date Registered" disabled>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="lastRead">Last Contact</label>
+                    <input type="text" id="lastRead" class="form-control" placeholder="Last Reading" disabled>
+                </div>
             </div>
-
-            <div>
-                <label for="lastRead" class="sr-only">Last Reading</label>
-                <input type="text" id="lastRead" class="form-control mb-2" placeholder="Last Reading" disabled>
-            </div>
-            <div>
-                <label for="measureInterval" class="sr-only">Measurement Interval</label>
-                <input type="text" id="measureInterval" class="form-control mb-2" placeholder="Measurement Interval">
-            </div>
-            <div>
-                <label for="startTime" class="sr-only">Daily Start Time</label>
-                <input type="text" id="startTime" class="form-control mb-2" placeholder="Daily Start Time">
-            </div>
-            <div>
-                <label for="endTime" class="sr-only">Daily End Time</label>
-                <input type="text" id="endTime" class="form-control mb-2" placeholder="Daily End Time">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="measureInterval">Measurement Interval</label>
+                    <div class="input-group mb-3">
+                        <select id="measureInterval" class="form-control" aria-describedby="minutes-addon" placeholder="Measurement Interval"></select>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="minutes-addon">minutes</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="startTime">Daily Start Time</label>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <select id="startTimeHour" class="form-control mb-2"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="startTimeMin" class="form-control mb-2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="endTime">Daily End Time</label>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <select id="endTimeHour" class="form-control mb-2"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="endTimeMin" class="form-control mb-2"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button class="btn btn btn-primary btn-block registerSubmit mt-4 mb-4" type="submit">Submit</button>
@@ -66,7 +91,7 @@
                 <p>Please try again or contact an administrator.</p>
             </div>
 
-            <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert alert-success alert-dismissible text-center" role="alert">
                 <strong>Information updated successfully!</strong>
                 <p>Redirecting you to your <a href="/user/profile" class="alert-link">profile page...</a> </p>
             </div>
