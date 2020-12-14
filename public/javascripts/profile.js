@@ -47,6 +47,19 @@ function addNewDeviceRequest(){
         data: JSON.stringify({friendlyName: friendlyName, deviceID: deviceID}),
         dataType: 'json'
     })
+        .done(newAPIKey)
+        .fail(newDeviceError);
+}
+
+function newAPIKey(data, textStatus, jqXHR){
+    $.ajax({
+        url: 'device/key',
+        type: 'POST',
+        contentType: 'application/json',
+        headers: {'x-auth': window.localStorage.getItem("authToken")},
+        data: JSON.stringify({deviceID: data.deviceID, APIKey: data.APIKey}),
+        dataType: 'json'
+    })
         .done(getDevices)
         .fail(newDeviceError);
 }

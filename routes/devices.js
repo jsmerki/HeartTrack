@@ -336,6 +336,79 @@ router.post('/edit', function(req, res, next) {
 
 
                 device.save();
+
+                var particle = new Particle();
+                let email = process.env.CLOUD_EMAIL;
+                let password = process.env.CLOUD_PASSWORD;
+
+                particle.login({username: email, password: password}).then(
+                    function(data) {
+                        console.log("Login success!");
+                        let token = data.body.access_token;
+
+                        var fnStartHr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartHour',
+                            argument: req.body.startTimeHour , auth: token });
+
+                        fnStartHr.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnStartMin = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartMin',
+                            argument: req.body.startTimeMin , auth: token });
+
+                        fnStartMin.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnEndHr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setEndHour',
+                            argument: req.body.endTimeHour , auth: token });
+
+                        fnEndHr.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnEndMin = particle.callFunction({ deviceId: req.body.deviceID, name: 'setEndMin',
+                            argument: req.body.endTimeMin , auth: token });
+
+                        fnEndMin.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        /*
+                        var fnFreq = particle.callFunction({ deviceId: req.body.deviceID, name: 'setInterval',
+                            argument: req.body.measureInterval , auth: token });
+
+                        fnFreq.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+                         */
+
+                    },
+                    function (err) {
+                        console.log('Could not log in.', err);
+                    }
+                );
+
                 return res.status(201).json({success: true, message: "Successfully edited device."});
             })
         } catch (exc){
