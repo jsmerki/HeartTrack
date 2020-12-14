@@ -23,8 +23,7 @@ function loginSuccess(data, textStatus, jqXHR){
 }
 
 function loginFailure(jqXHR, textStatus, errorThrown){
-    console.log("BIG FAIL");
-    console.dir(jqXHR);
+    $('#loginError').show();
 }
 
 
