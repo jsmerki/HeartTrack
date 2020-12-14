@@ -107,7 +107,7 @@ router.post('/add', function(req, res, next){
 });
 
 //Add measurement to posting device's array of measurements
-router.post('/measurement', function(req, eres, next){
+router.post('/measurement', function(req, res, next){
 
     let resJSON = {
         recorded: false,

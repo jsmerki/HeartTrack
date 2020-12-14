@@ -53,7 +53,7 @@ function addNewDeviceRequest(){
 
 function newAPIKey(data, textStatus, jqXHR){
     $.ajax({
-        url: 'device/key',
+        url: '/device/key',
         type: 'POST',
         contentType: 'application/json',
         headers: {'x-auth': window.localStorage.getItem("authToken")},

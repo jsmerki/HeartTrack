@@ -35,4 +35,6 @@ $().ready(function(){
         // getMeasurementsRequest();
         console.log('Authed');
     }
+
+    getMeasurementsRequest();
 })
