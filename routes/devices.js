@@ -268,6 +268,11 @@ router.get('/list', function(req, res, next) {
 
 /* getOne device. */
 router.get('/getOne', function(req, res, next) {
+    let resJSON = {
+        success: false,
+        message: ""
+    }
+
     if(req.query.deviceID.length < 1) {
         resJSON.message = "Missing device ID.";
         return res.status(400).json(resJSON);
@@ -304,6 +309,11 @@ router.get('/edit', function(req, res, next) {
 
 /* EDIT device. */
 router.post('/edit', function(req, res, next) {
+    let resJSON = {
+        success: false,
+        message: ""
+    }
+
     if(!req.body.hasOwnProperty('deviceID')) {
         resJSON.message = "Missing device ID.";
         return res.status(400).json(resJSON);
