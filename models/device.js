@@ -7,6 +7,11 @@ let deviceSchema = new db.Schema({
     ownerEmail:     { type: String },
     dateRegistered: { type: Date, default: Date.now },
     lastRead:       { type: Date, default: Date.now },
+    measureInterval:    { type: Number, default: 5 },
+    startTimeHour:      { type: Number, default: 0},
+    startTimeMin:        { type: Number, default: 0},
+    endTimeHour:      { type: Number, default: 0},
+    endTimeMin:        { type: Number, default: 0},
     readings:       [ Object ],
 });
 

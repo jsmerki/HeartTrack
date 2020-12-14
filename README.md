@@ -1,5 +1,6 @@
 # 513FinalProject
-http://3.129.203.46:3000/
+=======
+Link to our Webserver: kevinkasper.net
 
 DOCUMENTATION FOR MEASUREMENT ENDPOINT:
 ---------------------------------------
@@ -13,8 +14,11 @@ measurement was submitted which is why the published_at attribute of the ajax ca
 data SHOULD BE INITIALIZED WITH Date.now(). After measurements are stored they will be
 retrieved in a separate endpoint in order to display them to the user.
 
-Usage:
+
+HTTPS Usage:
 ---------------------------------------
+Note that this app utilizes certbot to generate secure SSL certificates. 
+
 $.ajax({
 url: https://3.129.203.46:3000/health/measurement,
 type: POST,
@@ -93,4 +97,4 @@ STATUS CODE: 401
     avgBPM: -1.0
 }
 
-
+}

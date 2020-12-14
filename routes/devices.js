@@ -1,4 +1,6 @@
 var express = require('express');
+
+let jQuery = require('jquery');
 var router = express.Router();
 let Device = require('../models/device');
 let User = require('../models/user');
@@ -249,6 +251,182 @@ router.get('/list', function(req, res, next) {
 
                 return res.status(200).json(responseDevices);
             });
+        } catch (exc){
+            return res.status(401).json({ success: false, message: "Invalid authentication token."});
+        }
+    }
+});
+
+/* getOne device. */
+router.get('/getOne', function(req, res, next) {
+    if(req.query.deviceID.length < 1) {
+        resJSON.message = "Missing device ID.";
+        return res.status(400).json(resJSON);
+    }
+    Device.findOne({deviceID: req.query.deviceID}, function(err, device){
+
+        if(err) {
+            return res.status(400).json({success: false, message: "Unknown database error"});
+        }
+
+        responseDevice = {
+            deviceID: device.deviceID,
+            APIKey: device.APIKey,
+            friendlyName: device.friendlyName,
+            ownerEmail: device.ownerEmail,
+            dateRegistered: device.dateRegistered,
+            lastRead: device.lastRead,
+            measureInterval: device.measureInterval,
+            startTimeHour: device.startTimeHour,
+            startTimeMin: device.startTimeMin,
+            endTimeHour: device.endTimeHour,
+            endTimeMin: device.endTimeMin
+        }
+
+        return res.status(200).json(responseDevice);
+    })
+
+});
+
+/* EDIT device. */
+router.get('/edit', function(req, res, next) {
+    res.render('editDevice.njk', { title: 'Express' });
+});
+
+/* EDIT device. */
+router.post('/edit', function(req, res, next) {
+    if(!req.body.hasOwnProperty('deviceID')) {
+        resJSON.message = "Missing device ID.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('friendlyName')) {
+        resJSON.message = "Missing device friendly name.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('measureInterval')) {
+        resJSON.message = "Missing measure interval.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('startTimeHour')) {
+        resJSON.message = "Missing start time hour.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('startTimeMin')) {
+        resJSON.message = "Missing start time minutes.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('endTimeHour')) {
+        resJSON.message = "Missing end time hour.";
+        return res.status(400).json(resJSON);
+    }
+    if(!req.body.hasOwnProperty('endTimeMin')) {
+        resJSON.message = "Missing end time minutes.";
+        return res.status(400).json(resJSON);
+    }
+
+    if(!req.headers["x-auth"]){
+        console.log('no auth');
+        return res.status(400).json({success: false, message: "Auth token not provided."});
+    }
+    else{
+        let token = req.headers["x-auth"];
+
+        try{
+            let decToken = jwt.decode(token, jwtSecretKey)
+
+            Device.findOne({deviceID: req.body.deviceID}, function(err, device){
+
+                if(err) {
+                    return res.status(400).json({success: false, message: "Unknown database error"});
+                }
+                if(device.ownerEmail != decToken.email){
+                    return res.status(400).json({success: false, message: "Device does not belong to user."});
+                }
+
+                device.friendlyName = req.body.friendlyName;
+                device.measureInterval = req.body.measureInterval;
+                device.startTimeHour = req.body.startTimeHour;
+                device.startTimeMin = req.body.startTimeMin;
+                device.endTimeHour = req.body.endTimeHour;
+                device.endTimeMin = req.body.endTimeMin;
+
+
+                device.save();
+
+                var particle = new Particle();
+                let email = process.env.CLOUD_EMAIL;
+                let password = process.env.CLOUD_PASSWORD;
+
+                particle.login({username: email, password: password}).then(
+                    function(data) {
+                        console.log("Login success!");
+                        let token = data.body.access_token;
+
+
+                        var fnStartHr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartHour',
+                            argument: req.body.startTimeHour , auth: token });
+
+                        fnStartHr.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        let freqStr = "freq:" + req.body.measureInterval;
+                        var fnFreq = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartHour',
+                            argument: freqStr , auth: token });
+
+                        fnFreq.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnStartMin = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartMin',
+                            argument: req.body.startTimeMin , auth: token });
+
+                        fnStartMin.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnEndHr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setEndHour',
+                            argument: req.body.endTimeHour , auth: token });
+
+                        fnEndHr.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        var fnEndMin = particle.callFunction({ deviceId: req.body.deviceID, name: 'setEndMin',
+                            argument: req.body.endTimeMin , auth: token });
+
+                        fnEndMin.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                    },
+                    function (err) {
+                        console.log('Could not log in.', err);
+                    }
+                );
+
+                return res.status(201).json({success: true, message: "Successfully edited device."});
+            })
         } catch (exc){
             return res.status(401).json({ success: false, message: "Invalid authentication token."});
         }

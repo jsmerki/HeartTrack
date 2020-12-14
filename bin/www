@@ -7,27 +7,43 @@
 var app = require('../app');
 var debug = require('debug')('513finalproject:server');
 var http = require('http');
+var fs = require('fs');
+
+const https = require('https');
+var key = fs.readFileSync(__dirname + '/../sslcertificate/selfsigned.key', 'utf8');
+var cert = fs.readFileSync(__dirname + '/../sslcertificate/selfsigned.crt','utf8');
+var credentials = {
+  key: key,
+  cert: cert
+};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '8443');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(3000);
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
+
+httpsServer.listen(8443);
+httpsServer.on('error', onError);
+httpsServer.on('listening', onHttpsListening);
+
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -82,9 +98,21 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = httpServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+/**
+ * Event listener for HTTPS server "listening" event.
+ */
+
+function onHttpsListening() {
+  var addr = httpsServer.address();
+  var bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }

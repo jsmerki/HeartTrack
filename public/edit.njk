@@ -1,0 +1,69 @@
+{% extends "base.njk" %}
+
+{% block scripts %}
+    {{  super() }}
+    <script type="application/javascript" src="/javascripts/edit.js"></script>
+{% endblock %}
+
+{% block styles %}
+    {{  super() }}
+    <link href="/stylesheets/signin.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div role="main" class="inner cover container">
+        <h1 class="cover-heading mb-4">Edit Account Information</h1>
+
+        <div class="w-75 container" id="passwordCriterion" style="display:none;color:darkred;">
+            <h6>Password Criterion</h6>
+            <ul class="text-left">
+                <li>Must contain at least one uppercase letter and one lowercase letter.</li>
+                <li>Must contain at least one special character.</li>
+                <li>Must contain at least one number.</li>
+                <li>Must be at least 8 characters long.</li>
+            </ul>
+        </div>
+
+
+        <form class="form-signin w-50" novalidate>
+            <div>
+                <label for="inputEmail" class="sr-only">Email Address</label>
+                <input type="email" id="inputEmail" class="form-control mb-2" disabled>
+            </div>
+
+            <div>
+                <label for="inputFullName" class="sr-only">Full Name</label>
+                <input type="text" id="inputFullName" class="form-control mb-2" placeholder="Full Name" required>
+
+            </div>
+
+            <div>
+                <label for="inputPassword" class="sr-only">New Password</label>
+                <input type="password" id="inputPassword" class="form-control mb-2" placeholder="Password" required>
+                <div class="invalid-feedback unmatchedPasswords">Passwords do not match.</div>
+                <div class="invalid-feedback weakPassword">Password is too weak!</div>
+            </div>
+            <div>
+                <label for="confirmPassword" class="sr-only">New Password</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+                <div class="invalid-feedback unmatchedPasswords">Passwords do not match.</div>
+                <div class="invalid-feedback weakPassword">Password is too weak!</div>
+            </div>
+
+            <button class="btn btn btn-primary btn-block registerSubmit mt-4 mb-4" type="submit">Submit</button>
+
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <strong>Information update failed.</strong>
+                <p>Please try again or contact an administrator.</p>
+            </div>
+
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <strong>Information updated successfully!</strong>
+                <p>Redirecting you to your <a href="/user/profile" class="alert-link">profile page...</a> </p>
+            </div>
+
+
+            <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+        </form>
+    </div>
+{% endblock %}
