@@ -55,6 +55,7 @@ function getDevices(){
 }
 
 function getDevicesSuccess(data, textStatus, jqXHR){
+    console.log(data);
     for(let device of data) {
         getStatisticsRequest(device.deviceID);
         console.log("Device found, requesting statistic.");
@@ -80,5 +81,4 @@ $().ready(function(){
         getDevices();
         console.log('Authed');
     }
-    getDevices();
 })
