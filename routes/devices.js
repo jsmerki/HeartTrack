@@ -346,10 +346,23 @@ router.post('/edit', function(req, res, next) {
                         console.log("Login success!");
                         let token = data.body.access_token;
 
+
                         var fnStartHr = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartHour',
                             argument: req.body.startTimeHour , auth: token });
 
                         fnStartHr.then(
+                            function(data) {
+                                console.log('Function called succesfully:', data);
+                            }, function(err) {
+                                console.log('An error occurred:', err);
+                            }
+                        );
+
+                        let freqStr = "freq:" + req.body.measureInterval;
+                        var fnFreq = particle.callFunction({ deviceId: req.body.deviceID, name: 'setStartHour',
+                            argument: freqStr , auth: token });
+
+                        fnFreq.then(
                             function(data) {
                                 console.log('Function called succesfully:', data);
                             }, function(err) {
@@ -389,19 +402,6 @@ router.post('/edit', function(req, res, next) {
                                 console.log('An error occurred:', err);
                             }
                         );
-
-                        /*
-                        var fnFreq = particle.callFunction({ deviceId: req.body.deviceID, name: 'setInterval',
-                            argument: req.body.measureInterval , auth: token });
-
-                        fnFreq.then(
-                            function(data) {
-                                console.log('Function called succesfully:', data);
-                            }, function(err) {
-                                console.log('An error occurred:', err);
-                            }
-                        );
-                         */
 
                     },
                     function (err) {
