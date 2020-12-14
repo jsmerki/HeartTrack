@@ -1,5 +1,5 @@
 var express = require('express');
-let jQuery = require('jQuery');
+let jQuery = require('jquery');
 var router = express.Router();
 let Device = require('../models/device');
 let User = require('../models/user');
