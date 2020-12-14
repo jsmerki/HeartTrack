@@ -10,25 +10,57 @@ function getStatisticsRequest(deviceID){
 }
 
 function getStatsSuccess(data, textStatus, jqXHR){
+    let minHeartRate = 0;
+    let avgHeartRate = 0;
+    let maxHeartRate = 0;
+    console.log(data.statistics);
 
-    for (let statistic of data.statistics) {
-        let rowString = $(
-            '<tr>\n' +
-            ' <td class="dateTime">[Timestamp]</td>' +
-            ' <td class="heartRate">[Timestamp]</td>' +
-            ' <td class="bloodOxygen">[Timestamp]</td>' +
-            ' <td class="deviceID">[Timestamp]</td>' +
-            '</tr>');
-	let timestamp = new Date(statistic.measureTime);
-	let dateString = timestamp.toLocaleDateString('en-US', {timeZone: 'America/Phoenix'});
-	let timeString = timestamp.toLocaleTimeString('en-US', {timeZone: 'America/Phoenix'});
-        rowString.find('.dateTime').text(dateString + ' ' + timeString);
-        rowString.find('.heartRate').text(statistic.heartRate);
-        rowString.find('.bloodOxygen').text(statistic.bloodOxygen);
-        rowString.find('.deviceID').text(statistic.deviceID);
-
-        $("tbody").append(rowString);
+    if((data.statistics.length) > 0)
+    {
+        minHeartRate = data.statistics[0].heartRate;
+        maxHeartRate = data.statistics[0].heartRate;
     }
+    for (let statistic of data.statistics) {
+        avgHeartRate = statistic.heartRate;
+        if(statistic.heartRate > maxHeartRate) {
+            maxHeartRate = statistic.heartRate;
+        }
+        if(statistic.heartRate < minHeartRate) {
+            minHeartRate = statistic.heartRate;
+        }
+    }
+
+    if((data.statistics.length) > 0)
+    {
+        avgHeartRate = avgHeartRate / (data.statistics.length);
+    }
+    else
+    {
+        minHeartRate = '-';
+        avgHeartRate = '-';
+        maxHeartRate = '-';
+    }
+
+    let rowString = $(
+        '<tr>\n' +
+        ' <td class="friendlyName">[Timestamp]</td>' +
+        ' <td class="minHeartRate">[Timestamp]</td>' +
+        ' <td class="avgHeartRate">[Timestamp]</td>' +
+        ' <td class="maxHeartRate">[Timestamp]</td>' +
+        '</tr>');
+    rowString.find('.minHeartRate').text(minHeartRate);
+    rowString.find('.avgHeartRate').text(avgHeartRate);
+    rowString.find('.maxHeartRate').text(maxHeartRate);
+
+    // for (let statistic of data.statistics) {
+    //
+	// let timestamp = new Date(statistic.measureTime);
+	// let dateString = timestamp.toLocaleDateString('en-US', {timeZone: 'America/Phoenix'});
+	// let timeString = timestamp.toLocaleTimeString('en-US', {timeZone: 'America/Phoenix'});
+    //
+    //
+    //     $("tbody").append(rowString);
+    // }
     console.log("fetched data");
 }
 
