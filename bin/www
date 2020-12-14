@@ -117,6 +117,3 @@ function onHttpsListening() {
   debug('Listening on ' + bind);
 }
 
-http.get('*', function(req, res) {
-  res.redirect('https://' + req.headers.host + req.url);
-})
