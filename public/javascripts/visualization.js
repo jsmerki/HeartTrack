@@ -1,4 +1,6 @@
-function getStatisticsRequest(deviceID){
+let currentDeviceName = "";
+function getStatisticsRequest(deviceID, deviceName){
+    currentDeviceName = deviceName;
     $.ajax({
         url: '/health/getStatistics',
         type: 'GET',
@@ -9,7 +11,7 @@ function getStatisticsRequest(deviceID){
         .fail(getStatsFailure);
 }
 
-function getStatsSuccess(data, textStatus, jqXHR){
+function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     let minHeartRate = 0;
     let avgHeartRate = 0;
     let maxHeartRate = 0;
@@ -48,6 +50,7 @@ function getStatsSuccess(data, textStatus, jqXHR){
         ' <td class="avgHeartRate">[Timestamp]</td>' +
         ' <td class="maxHeartRate">[Timestamp]</td>' +
         '</tr>');
+    rowString.find('.friendlyName').text(currentDeviceName);
     rowString.find('.minHeartRate').text(minHeartRate);
     rowString.find('.avgHeartRate').text(avgHeartRate);
     rowString.find('.maxHeartRate').text(maxHeartRate);
