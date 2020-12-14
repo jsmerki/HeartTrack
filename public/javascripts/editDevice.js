@@ -118,7 +118,7 @@ $().ready( function(){
         }));
     }
 
-    for(let i=0; i<13; i++) {
+    for(let i=0; i<24; i++) {
         $('#startTimeHour').append($('<option>', {
             value: i,
             text: i
@@ -128,7 +128,7 @@ $().ready( function(){
             text: i
         }));
     }
-    for(let i=0; i<11; i++) {
+    for(let i=0; i<12; i++) {
         $('#startTimeMin').append($('<option>', {
             value: i*5,
             text: i*5
