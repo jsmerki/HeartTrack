@@ -80,4 +80,5 @@ $().ready(function(){
         getDevices();
         console.log('Authed');
     }
+    getDevices();
 })
