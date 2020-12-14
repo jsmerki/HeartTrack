@@ -4,6 +4,7 @@ let jQuery = require('jquery');
 var router = express.Router();
 let Device = require('../models/device');
 let User = require('../models/user');
+let Statistic = require('../models/statistic')
 let Particle = require('particle-api-js');
 
 let jwt = require("jwt-simple");
@@ -157,6 +158,14 @@ router.post('/measurement', function(req, res, next){
                 device.save(function(err, device){
                     console.log(req.body.published_at + " :New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!");
                 });
+
+                new_measurement = new Statistic({});
+
+                new_measurement.deviceID = device.deviceID;
+                new_measurement.bloodOxygen = req.body.spo2;
+                new_measurement.heartRate = req.body.avgBPM;
+
+                new_measurement.save();
 
                 resJSON.recorded = true;
                 resJSON.message = "New entry of : " + req.body.avgBPM + " BPM and " + req.body.spo2 + " %O2 added!";
