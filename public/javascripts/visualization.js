@@ -112,38 +112,59 @@ function plotDailies(currentDay, dailiesData) {
         let dayData = dailiesData[i];
 
         if(dayData.length > 0) {
-
+            console.log(i);
             let heartPlot = "";
             let oxyPlot = "";
+
+            let hour;
 
             let timeData = [];
             let heartData = [];
             let oxyData = [];
-            for (let statistic in dayData) {
-                timeData.push(statistic.measureTime);
+            for (let statistic of dayData) {
+                let dateSplit = statistic.measureTime.toLocaleString().split(", ");
+
+                //Replace slashes with dashes and get time
+                let day = dateSplit[0].split("/");
+                let time = dateSplit[1].split(" ")[0];
+
+                let dayReconstructed = day[2] + "-" + day[0] + "-" + day[1];
+                if(dateSplit[1].split(" ")[1] === "PM"){
+                    //After 12PM add 12 to the hour
+                    time = time.replace(statistic.measureTime.getHours() - 12, statistic.measureTime.getHours());
+                }
+                else{
+                    //Prepend hour with 0 if before 12PM
+                    time = time.replace(statistic.measureTime.getHours(), "0" + statistic.measureTime.getHours());
+                }
+
+                let dateString = dayReconstructed + " " + time;
+
+                timeData.push(dateString);
                 heartData.push(statistic.heartRate);
                 oxyData.push(statistic.bloodOxygen);
             }
 
+
             let heartDivString = "heart"+i;
             graphsString = graphsString + '<div id="' + heartDivString + '" class="col-md-6 text-center mb-4 mt-4"></div>';
-            var heartTrace = {
+            var heartTrace = [{
                 x: timeData,
                 y: heartData,
                 mode: 'markers',
                 type: 'scatter'
-            };
+            }];
 
 
             let oxyDivString = "oxy"+i;
             graphsString = graphsString + '<div id="' + oxyDivString + '" class="col-md-6 text-center mb-4 mt-4"></div>';
 
-            var oxyTrace = {
+            var oxyTrace = [{
                 x: timeData,
                 y: oxyData,
                 mode: 'markers',
                 type: 'scatter'
-            };
+            }];
 
             graphsString = graphsString + '</div>';
             $(".graphHolder").append(graphsString);

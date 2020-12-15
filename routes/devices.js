@@ -199,8 +199,8 @@ router.post('/key', function(req, res, next){
     }
 
     var particle = new Particle();
-    let email = process.env.CLOUD_EMAIL;
-    let password = process.env.CLOUD_PASSWORD;
+    let email = "jsm8577@gmail.com";
+    let password = "ece202!w3b";
     console.log(email);
     console.log(password);
 
