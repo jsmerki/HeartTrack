@@ -6,6 +6,12 @@ router.get('/', function(req, res, next) {
   res.render('index.njk', { title: 'Express' });
 });
 
+/* GET home page. */
+router.get('/info', function(req, res, next) {
+  res.render('infoPage.njk', { title: 'Express' });
+});
+
+
 router.get('/.well-known/acme-challenge/QY_IaT16z5QCwHeAbHWRu-aB2zMx-k9E2Hsk8DEUGcg', function(req, res, next) {
   res.render('code.njk', { title: 'Express' });
 });

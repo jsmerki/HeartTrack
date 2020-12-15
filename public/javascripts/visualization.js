@@ -82,9 +82,9 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
         ' <td class="maxHeartRate">[Timestamp]</td>' +
         '</tr>');
     rowString.find('.friendlyName').text(currentDeviceName);
-    rowString.find('.minHeartRate').text(minHeartRate);
-    rowString.find('.avgHeartRate').text(avgHeartRate);
-    rowString.find('.maxHeartRate').text(maxHeartRate);
+    rowString.find('.minHeartRate').text(minHeartRate.toFixed(2));
+    rowString.find('.avgHeartRate').text(avgHeartRate.toFixed(2));
+    rowString.find('.maxHeartRate').text(maxHeartRate.toFixed(2));
 
     $("tbody").append(rowString);
 
@@ -141,8 +141,8 @@ function plotDailies(currentDay, dailiesData) {
                 let dateString = dayReconstructed + " " + time;
 
                 timeData.push(dateString);
-                heartData.push(statistic.heartRate);
-                oxyData.push(statistic.bloodOxygen);
+                heartData.push(statistic.heartRate.toFixed(2)*1);
+                oxyData.push(statistic.bloodOxygen.toFixed(2)*1);
             }
 
 
