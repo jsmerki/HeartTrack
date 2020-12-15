@@ -16,14 +16,26 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     let avgHeartRate = 0;
     let maxHeartRate = 0;
     console.log(data.statistics);
+    let currentDay = new Date();
+    let oneWeekms = 1000 * 3600 * 24 * 7;
 
-    if((data.statistics.length) > 0)
-    {
-        minHeartRate = data.statistics[0].heartRate;
-        maxHeartRate = data.statistics[0].heartRate;
-    }
+    let lastSevenDaysStats = {};
+
+
     for (let statistic of data.statistics) {
-        avgHeartRate = statistic.heartRate;
+        if(currentDay - statistic.measureTime < oneWeekms)
+        {
+            lastSevenDaysStats.append(statistic);
+        }
+    }
+
+    console.log(lastSevenDaysStats);
+    minHeartRate = lastSevenDaysStats[0].heartRate;
+    maxHeartRate = lastSevenDaysStats[0].heartRate;
+
+    for (let statistic of lastSevenDaysStats) {
+
+        avgHeartRate = avgHeartRate + statistic.heartRate;
         if(statistic.heartRate > maxHeartRate) {
             maxHeartRate = statistic.heartRate;
         }
@@ -32,9 +44,9 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
         }
     }
 
-    if((data.statistics.length) > 0)
+    if((lastSevenDaysStats.length) > 0)
     {
-        avgHeartRate = avgHeartRate / (data.statistics.length);
+        avgHeartRate = avgHeartRate / (lastSevenDaysStats.length);
     }
     else
     {
@@ -64,6 +76,8 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     //
     //     $("tbody").append(rowString);
     // }
+
+    $("tbody").append(rowString);
     console.log("fetched data");
 }
 
@@ -92,7 +106,7 @@ function getDevices(){
 function getDevicesSuccess(data, textStatus, jqXHR){
     console.log(data);
     for(let device of data) {
-        getStatisticsRequest(device.deviceID);
+        getStatisticsRequest(device.deviceID,device.friendlyName);
         console.log("Device found, requesting statistic.");
     }
 
