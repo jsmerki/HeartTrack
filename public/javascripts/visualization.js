@@ -1,4 +1,13 @@
 let currentDeviceName = "";
+var weekday = new Array(7);
+weekday[0] = "Sunday";
+weekday[1] = "Monday";
+weekday[2] = "Tuesday";
+weekday[3] = "Wednesday";
+weekday[4] = "Thursday";
+weekday[5] = "Friday";
+weekday[6] = "Saturday";
+
 function getStatisticsRequest(deviceID, deviceName){
     currentDeviceName = deviceName;
     $.ajax({
@@ -15,22 +24,20 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     let minHeartRate = 0;
     let avgHeartRate = 0;
     let maxHeartRate = 0;
-    console.log(data.statistics);
     let currentDay = new Date();
     let oneWeekms = 1000 * 3600 * 24 * 7;
 
-    let lastSevenDaysStats = {};
+    let lastSevenDaysStats = [];
 
 
     for (let statistic of data.statistics) {
         let measureTime = new Date(statistic.measureTime);
         if((currentDay - measureTime) < oneWeekms)
         {
-            lastSevenDaysStats.append(statistic);
+            lastSevenDaysStats.push(statistic);
         }
     }
 
-    console.log(lastSevenDaysStats);
     minHeartRate = lastSevenDaysStats[0].heartRate;
     maxHeartRate = lastSevenDaysStats[0].heartRate;
 
@@ -68,19 +75,88 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     rowString.find('.avgHeartRate').text(avgHeartRate);
     rowString.find('.maxHeartRate').text(maxHeartRate);
 
-    // for (let statistic of data.statistics) {
-    //
-	// let timestamp = new Date(statistic.measureTime);
-	// let dateString = timestamp.toLocaleDateString('en-US', {timeZone: 'America/Phoenix'});
-	// let timeString = timestamp.toLocaleTimeString('en-US', {timeZone: 'America/Phoenix'});
-    //
-    //
-    //     $("tbody").append(rowString);
-    // }
-
     $("tbody").append(rowString);
-    console.log("fetched data");
+
+    let separatedData = getEachDayData(currentDay, lastSevenDaysStats);
+
+    plotDailies(separatedData);
+
+
 }
+
+function plotDailies(dailiesData) {
+    console.log('Dailies data: ');
+    console.dir(dailiesData);
+    console.log('--------------');
+    for (let i = 0; i < 7; i++) {
+        // For each day in the past seven days
+        // If a given day has statistic data
+        let dayData = dailiesData[i];
+
+        if(dayData.length > 0) {
+            let graphsString = '<div class="row text-center">';
+
+            // Get the day of the week by getting the day (0 - 6) of the first statistic
+            // Since we have statistic data and it's grouped by day, we take the first stat
+            // and find the weekday corresponding.
+            let dayOfTheWeek = weekday[dayData[0].measureTime.getDay()];
+            graphsString = graphsString + '<h4>' + dayOfTheWeek + '</h4>';
+
+            console.log('**** ' + dayOfTheWeek + ' ****');
+            let heartPlot = "";
+            let oxyPlot = "";
+
+            let timeData = [];
+            let heartData = [];
+            let oxyData = [];
+            for (let statistic in dayData) {
+                timeData.push(statistic.measureTime);
+                heartData.push(statistic.heartRate);
+                oxyData.push(statistic.bloodOxygen);
+            }
+
+            $(".graphHolder").append(dayGraph);
+        }
+        else {
+            console.log('no data');
+        }
+    }
+
+}
+
+
+function subtractDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
+function getEachDayData(currentDate, statistics){
+    let pastSevenDays = [];
+
+    let dayAnalyzing = currentDate;
+    let dayAfterDayAnalyzing = currentDate;
+    let dailyData = [];
+    for(let i=0; i<7; i++)
+    {
+        dayAnalyzing = subtractDays(dayAnalyzing, i);
+        for(let statistic in statistics)
+        {
+
+            // If number of milliseconds is less than
+            if((statistic.measureTime < dayAfterDayAnalyzing) && (statistic.measureTime > dayAnalyzing))
+            {
+                dailyData.push(statistic);
+            }
+        }
+
+        pastSevenDays.push(dailyData);
+        dayAfterDayAnalyzing = subtractDays(dayAfterDayAnalyzing, i);
+    }
+
+    return pastSevenDays;
+}
+
 
 function getStatsFailure(jqXHR, textStatus, errorThrown) {
     // If authentication error, delete the authToken
