@@ -33,6 +33,7 @@ app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use(express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use(express.static(__dirname + '/node_modules/animejs/lib'));
 app.use(express.static(__dirname + '/node_modules/timepicker'));
+app.use(express.static(__dirname + '/node_modules/plotly'));
 
 // Routing
 app.use('/', indexRouter);

@@ -8,6 +8,18 @@ weekday[4] = "Thursday";
 weekday[5] = "Friday";
 weekday[6] = "Saturday";
 
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+function subtractDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
 function getStatisticsRequest(deviceID, deviceName){
     currentDeviceName = deviceName;
     $.ajax({
@@ -28,7 +40,6 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
     let oneWeekms = 1000 * 3600 * 24 * 7;
 
     let lastSevenDaysStats = [];
-
 
     for (let statistic of data.statistics) {
         let measureTime = new Date(statistic.measureTime);
@@ -79,30 +90,29 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
 
     let separatedData = getEachDayData(currentDay, lastSevenDaysStats);
 
-    plotDailies(separatedData);
+    plotDailies(currentDay, separatedData);
 
 
 }
 
-function plotDailies(dailiesData) {
+function plotDailies(currentDay, dailiesData) {
     console.log('Dailies data: ');
     console.dir(dailiesData);
     console.log('--------------');
     for (let i = 0; i < 7; i++) {
+        let graphsString = '<div class="row text-center mb-4 mt-4">';
+        // Get the day of the week by getting the day (0 - 6) of the first statistic
+        // Since we have statistic data and it's grouped by day, we take the first stat
+        // and find the weekday corresponding.
+        let dayOfTheWeek = subtractDays(currentDay,i);
+        graphsString = graphsString + '<h3 class="m-auto">' + weekday[dayOfTheWeek.getDay()] + '</h3></div><div class="row text-center mb-4 mt-4">';
+
         // For each day in the past seven days
         // If a given day has statistic data
         let dayData = dailiesData[i];
 
         if(dayData.length > 0) {
-            let graphsString = '<div class="row text-center">';
 
-            // Get the day of the week by getting the day (0 - 6) of the first statistic
-            // Since we have statistic data and it's grouped by day, we take the first stat
-            // and find the weekday corresponding.
-            let dayOfTheWeek = weekday[dayData[0].measureTime.getDay()];
-            graphsString = graphsString + '<h4>' + dayOfTheWeek + '</h4>';
-
-            console.log('**** ' + dayOfTheWeek + ' ****');
             let heartPlot = "";
             let oxyPlot = "";
 
@@ -115,43 +125,67 @@ function plotDailies(dailiesData) {
                 oxyData.push(statistic.bloodOxygen);
             }
 
-            $(".graphHolder").append(dayGraph);
+            let heartDivString = "heart"+i;
+            graphsString = graphsString + '<div id="' + heartDivString + '" class="col-md-6 text-center mb-4 mt-4"></div>';
+            var heartTrace = {
+                x: timeData,
+                y: heartData,
+                mode: 'markers',
+                type: 'scatter'
+            };
+
+
+            let oxyDivString = "oxy"+i;
+            graphsString = graphsString + '<div id="' + oxyDivString + '" class="col-md-6 text-center mb-4 mt-4"></div>';
+
+            var oxyTrace = {
+                x: timeData,
+                y: oxyData,
+                mode: 'markers',
+                type: 'scatter'
+            };
+
+            graphsString = graphsString + '</div>';
+            $(".graphHolder").append(graphsString);
+
+            Plotly.newPlot(heartDivString, heartTrace);
+            Plotly.newPlot(oxyDivString, oxyTrace);
         }
         else {
-            console.log('no data');
+            graphsString = graphsString + '<h5 class="m-auto">No data recorded.</h5>';
+            graphsString = graphsString + '</div>';
+            $(".graphHolder").append(graphsString);
         }
     }
 
 }
 
 
-function subtractDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
-}
 
-function getEachDayData(currentDate, statistics){
+
+function getEachDayData(currentDate, lastSevenDaysStats){
+    currentDate = currentDate.setHours(0,0,0,1);
+
     let pastSevenDays = [];
-
     let dayAnalyzing = currentDate;
-    let dayAfterDayAnalyzing = currentDate;
+    let dayAfterDayAnalyzing = addDays(currentDate,1);
     let dailyData = [];
     for(let i=0; i<7; i++)
     {
-        dayAnalyzing = subtractDays(dayAnalyzing, i);
-        for(let statistic in statistics)
+        dailyData =[]
+        dayAnalyzing = subtractDays(currentDate, i);
+        for(let statistic of lastSevenDaysStats)
         {
-
-            // If number of milliseconds is less than
-            if((statistic.measureTime < dayAfterDayAnalyzing) && (statistic.measureTime > dayAnalyzing))
+            statistic.measureTime = new Date(statistic.measureTime);
+            // console.log(dayAnalyzing + " < " + statistic.measureTime + " < " + dayAfterDayAnalyzing + ": " + ((statistic.measureTime < dayAfterDayAnalyzing) && (statistic.measureTime > dayAnalyzing)));
+            if((statistic.measureTime <= dayAfterDayAnalyzing) && (statistic.measureTime > dayAnalyzing))
             {
                 dailyData.push(statistic);
             }
         }
 
         pastSevenDays.push(dailyData);
-        dayAfterDayAnalyzing = subtractDays(dayAfterDayAnalyzing, i);
+        dayAfterDayAnalyzing = subtractDays(currentDate, i);
     }
 
     return pastSevenDays;
