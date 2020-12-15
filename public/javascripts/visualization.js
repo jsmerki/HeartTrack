@@ -23,7 +23,8 @@ function getStatsSuccess(data, textStatus, jqXHR, deviceName){
 
 
     for (let statistic of data.statistics) {
-        if(currentDay - statistic.measureTime < oneWeekms)
+        let measureTime = new Date(statistic.measureTime);
+        if((currentDay - measureTime) < oneWeekms)
         {
             lastSevenDaysStats.append(statistic);
         }
